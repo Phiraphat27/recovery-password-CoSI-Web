@@ -1,0 +1,14 @@
+{
+    "signIn": {
+        "HeadSignIn": "Sign in to your account",
+        "email": "Email",
+        "password": "Password",
+        "passwordInfo": "Use at least 8 characters, one uppercase, one lowercase and one number.",
+        "rememberMe": "Remember me",
+        "rememberMeInfo": "You'll be able to login without password for 7 day.",
+        "forgotPassword": "Forgot password?",
+        "signIn": "Sign in",
+        "notMember": "Not a member?",
+        "joinCosi": "Join Cosi"
+    }
+}
