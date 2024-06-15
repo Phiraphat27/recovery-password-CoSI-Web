@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model git_commit {
+  commit_sha     String    @id @db.VarChar(40)
+  commit_author  String    @db.Text
+  commit_branch  String    @db.Text
+  commit_date    DateTime? @db.Timestamp(0)
+  commit_message String    @db.Text
+  commit_repo    String    @db.Text
+  commit_url     String    @db.Text
+}
+
+model key_user {
+  key_user_id              Int    @id @default(autoincrement())
+  key_id                   String @unique(map: "key_id") @db.VarChar(10)
+  user                     String @db.VarChar(14)
+  user_key_user_userTouser user   @relation("key_user_userTouser", fields: [user], references: [user_id], onDelete: Cascade, map: "key_user_ibfk_1")
+
+  @@index([user], map: "user")
+  @@index([user], map: "user_2")
+}
+
+model log {
+  log_date   DateTime @id @default(now()) @db.Timestamp(0)
+  log_ip     String   @db.TinyText
+  log_action String   @db.Text
+  log_detail String   @db.Text
+  log_user   String   @db.VarChar(14)
+  user       user     @relation(fields: [log_user], references: [user_id], onDelete: Cascade, map: "log_ibfk_1")
+
+  @@index([log_user], map: "log_user")
+}
+
+model news {
+  news_id      String   @id @db.VarChar(10)
+  title_en     String   @db.Text
+  title_th     String   @db.Text
+  content_en   String   @db.LongText
+  content_th   String   @db.LongText
+  publish_date DateTime @default(now()) @db.Timestamp(0)
+  news_draft   Boolean  @default(true)
+  news_image   String   @db.Text
+}
+
+model papers {
+  paper_id        String   @id @db.VarChar(10)
+  paper_title     String   @db.Text
+  paper_authors   String   @db.Text
+  paper_abstract  String   @db.Text
+  paper_keyworlds String?  @db.Text
+  paper_date      DateTime @db.Date
+  paper_url       String?  @db.Text
+}
+
+model permission {
+  permission_id   String            @id @db.VarChar(8)
+  permission_name permission_name[]
+  user            user[]
+}
+
+model permission_name {
+  name          String     @db.Text
+  language_code String     @db.VarChar(5)
+  permission_id String     @db.VarChar(8)
+  permission    permission @relation(fields: [permission_id], references: [permission_id], onDelete: Cascade, map: "permission_name_ibfk_1")
+
+  @@id([language_code, permission_id])
+  @@index([permission_id], map: "permission_id")
+}
+
+model position {
+  position_id    String          @id @db.VarChar(8)
+  position_order Int
+  position_name  position_name[]
+  user           user[]
+}
+
+model position_name {
+  name          String   @db.Text
+  language_code String   @db.VarChar(5)
+  position_id   String   @db.VarChar(8)
+  position      position @relation(fields: [position_id], references: [position_id], onDelete: Cascade, map: "position_name_ibfk_1")
+
+  @@id([language_code, position_id])
+  @@index([position_id], map: "position_id")
+}
+
+model profile {
+  name          String @db.Text
+  details       String @db.Text
+  language_code String @db.VarChar(5)
+  user_id       String @db.VarChar(14)
+  user          user   @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "profile_ibfk_1")
+
+  @@id([language_code, user_id])
+  @@index([user_id], map: "user_id")
+}
+
+model time_entry {
+  id         Int       @id @default(autoincrement())
+  userId     String    @db.VarChar(14)
+  entryTime  DateTime  @default(now())
+  exitTime   DateTime?
+  time_hours Float?
+  user       user      @relation(fields: [userId], references: [user_id], onDelete: Cascade, map: "time_entry_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
+
+model user {
+  user_id                      String       @id @db.VarChar(14)
+  user_name                    String       @db.Text
+  user_join                    DateTime     @default(now()) @db.Date
+  user_terminated              DateTime?    @db.Date
+  user_password                String       @db.Text
+  user_email                   String       @db.Text
+  user_git                     String?      @db.Text
+  user_image                   String       @db.Text
+  user_position                String?      @db.VarChar(8)
+  user_permission              String?      @db.VarChar(8)
+  user_profile                 String?      @db.VarChar(10)
+  key_user_key_user_userTouser key_user[]   @relation("key_user_userTouser")
+  log                          log[]
+  profile                      profile[]
+  session                      session[]
+  time_entry                   time_entry[]
+  position                     position?    @relation(fields: [user_position], references: [position_id], onDelete: Cascade, map: "user_ibfk_1")
+  permission                   permission?  @relation(fields: [user_permission], references: [permission_id], onDelete: Cascade, map: "user_ibfk_2")
+
+  @@index([user_permission], map: "user_permission")
+  @@index([user_profile], map: "user_profile")
+  @@index([user_position], map: "user_type")
+}
+
+model session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       String   @db.VarChar(14)
+  expires      DateTime @db.DateTime(0)
+  user         user     @relation(fields: [userId], references: [user_id], onDelete: Cascade, map: "session_ibfk_1")
+
+  @@index([userId], map: "userId")
+}
