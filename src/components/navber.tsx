@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
     Navbar,
@@ -25,6 +26,12 @@ import {
     RocketLaunchIcon,
     Bars2Icon,
 } from "@heroicons/react/24/solid";
+// @ts-ignore
+import Cookies from 'js-cookie';
+import { getSession } from "@/lib/auth";
+import { cookies } from "next/headers";
+import { sessionData } from "@/type/sessionData";
+import { useLocale } from "next-intl";
 
 // profile menu component
 const profileMenuItems = [
@@ -50,7 +57,7 @@ const profileMenuItems = [
     },
 ];
 
-function ProfileMenu() {
+function ProfileMenu({ src }: { src: string }) {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const closeMenu = () => setIsMenuOpen(false);
@@ -67,7 +74,7 @@ function ProfileMenu() {
                         size="sm"
                         alt="tania andrew"
                         className="border border-gray-900 p-0.5"
-                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                        src={`https://cosi.bu.ac.th/collections/members/${src}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
                     <ChevronDownIcon
                         strokeWidth={2.5}
                         className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
@@ -219,6 +226,8 @@ function NavList() {
 
 export function ComplexNavbar() {
     const [isNavOpen, setIsNavOpen] = React.useState(false);
+    const [session, setSession] = React.useState<sessionData>();
+    const localActive = useLocale();
 
     const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
@@ -227,6 +236,16 @@ export function ComplexNavbar() {
             "resize",
             () => window.innerWidth >= 960 && setIsNavOpen(false),
         );
+
+        async function CallSession() {
+            await getSession().then((res: any) => {
+                console.log(res.user);
+                setSession(res.user);
+            });
+        }
+
+        CallSession();
+
     }, []);
 
     return (
@@ -250,10 +269,18 @@ export function ComplexNavbar() {
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
 
-                <Button size="sm" variant="text" className="lg:ml-auto" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <Typography
+                    as="span"
+                    variant="small"
+                    className="lg:ml-auto font-medium pr-4" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
+                    {session ? session.profile.filter((x) => {
+                        return x.language_code === localActive
+                    })[0].name : "Guest"}
+                </Typography>
+                {/* <Button size="sm" variant="text" className="lg:ml-auto" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <span>Log In</span>
-                </Button>
-                <ProfileMenu />
+                </Button> */}
+                <ProfileMenu src={session?.user_image || ""} />
             </div>
             <MobileNav open={isNavOpen} className="overflow-scroll">
                 <NavList />
