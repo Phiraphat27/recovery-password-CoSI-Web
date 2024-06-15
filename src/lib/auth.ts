@@ -2,7 +2,7 @@
 import prisma from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { generator_id, isIdUniqueUser } from '@/lib/dbid';
-import { encrypt, decrypt, encryptJWT } from '@/lib/secret';
+import { encrypt, decrypt, encryptJWT, decryptJWT } from '@/lib/secret';
 import { cookies } from 'next/headers';
 import { sessionData } from '@/type/sessionData';
 
@@ -51,8 +51,19 @@ async function authenticateUser(email: string, password: string) {
                 user_email: true,
                 user_password: true,
                 user_name: true,
-                user_permission: true,
-                user_position: true,
+                user_image: true,
+                permission: {
+                    select: { permission_name: true }
+                },
+                position: {
+                    select: { position_name: true }
+                },
+                profile: {
+                    select: {
+                        name: true,
+                        language_code: true,
+                    }
+                }
             }
         }
     );
@@ -72,33 +83,35 @@ export async function login(formData: FormData) {
     if (!user) {
         return { Error: "Invalid Email or Password" };
     }
-
-    const sessionToken = await createSession(user);
+    const sessionToken = await createSession(user as sessionData);
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     cookies().set("session", sessionToken, { expires, httpOnly: true }); // 7 days
     return { Success: true };
 }
 
 export async function createSession(user: sessionData) {
-    const sessionToken = await encryptJWT({ user });
+    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const sessionToken = await encryptJWT({ user, expires });
     const session = await prisma.session.create({
         data: {
             sessionToken,
             userId: user.user_id,
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+            expires: expires, // 7 days
         },
     });
     return session.sessionToken;
 }
 
-export async function getSession(sessionToken: string) {
-    const session = await prisma.session.findUnique({
-        where: { sessionToken },
-        include: { user: true },
-    });
-    if (session && session.expires > new Date()) {
-        return session.user;
-    }
+export async function getSession(): Promise<any> {
+    const sessionToken = cookies().get("session");
+    return await decryptJWT(sessionToken?.value as string);
+    // const session = await prisma.session.findUnique({
+    //     where: { sessionToken },
+    //     include: { user: true },
+    // });
+    // if (session && session.expires > new Date()) {
+    //     return session.user;
+    // }
     return null;
 }
 
