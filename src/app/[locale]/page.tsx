@@ -1,12 +1,20 @@
 "use client"
 import { useDictionary } from "@/lang/useDictionary";
-import { useEffect, useState } from "react"
+import { login } from "@/lib/auth";
+import { handleLogin } from "@/lib/serverActions";
+import { redirect } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react"
+import Alert from "@/components/Dialog/Alert";
 
 export default function SignIn() {
   const [values, setValues] = useState({
     email: '',
     password: '',
   })
+  const [error, setError] = useState({
+    status: false,
+    message: ''
+  });
   const [isDarkMode, setIsDarkMode] = useState(false);
   const Dict = useDictionary("signIn");
 
@@ -18,8 +26,25 @@ export default function SignIn() {
     setIsDarkMode(darkModeMediaQuery.matches);
   }, []);
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    await handleLogin(formData).then((data: any) => {
+      console.log(data);
+      
+      if (data && data.data.Error) {
+        setError({
+          ...error,
+          status: true,
+          message: data.data.Error
+        });
+      }
+    })
+  };
+
   return (
     <>
+      <Alert open={error} setOpen={setError} info={error.message} />
       <div className="flex min-h-full h-svh flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="border border-gray-500 dark:border-gray-300 rounded-lg p-6 sm:mx-auto sm:w-full sm:max-w-lg">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -34,7 +59,7 @@ export default function SignIn() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <div className="w-full">
                   <div className="relative w-full min-w-[200px] h-10">
@@ -118,7 +143,7 @@ export default function SignIn() {
                 </div>
                 <div className="text-sm pt-6">
                   <a href="#" className="font-semibold text-[#5e5e5e] hover:text-[#767676] dark:text-gray-100">
-                  {Dict("forgotPassword")}
+                    {Dict("forgotPassword")}
                   </a>
                 </div>
               </div>
@@ -134,9 +159,9 @@ export default function SignIn() {
             </form>
 
             <p className="mt-10 text-center text-sm text-gray-500 dark:text-[#777777]">
-            {Dict("notMember")}{' '}
+              {Dict("notMember")}{' '}
               <a href="#" className="font-semibold leading-6 text-[#4b4b4b] hover:text-[#767676] dark:text-gray-200">
-              {Dict("joinCosi")}
+                {Dict("joinCosi")}
               </a>
             </p>
           </div>

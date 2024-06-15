@@ -8,7 +8,7 @@ import "./globals.css";
 const NotoSansThai = Noto_Sans_Thai_Looped({ weight: ['100', '200', '300', '400', '500', '600', '700', '800'], subsets: ["latin", "thai"] });
 
 export const metadata: Metadata = {
-  title: 'CoSI Lab | Bangkok Uni.',
+  title: 'CoSI Lab | Members',
   description: 'Website description',
   icons: {
     icon: [
