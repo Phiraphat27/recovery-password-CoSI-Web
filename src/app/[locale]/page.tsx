@@ -1,8 +1,7 @@
 "use client"
 import { useDictionary } from "@/lang/useDictionary";
 import { login } from "@/lib/auth";
-import { handleLogin } from "@/lib/serverActions";
-import { redirect } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { FormEvent, useEffect, useState } from "react"
 import Alert from "@/components/Dialog/Alert";
 
@@ -17,6 +16,7 @@ export default function SignIn() {
   });
   const [isDarkMode, setIsDarkMode] = useState(false);
   const Dict = useDictionary("signIn");
+  const router = useRouter();
 
   useEffect(() => {
     const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -29,14 +29,17 @@ export default function SignIn() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    await handleLogin(formData).then((data: any) => {
-      console.log(data);
+    await login(formData).then((data: any) => {
+
+      if (data && data.Success) {
+        router.replace("/office");
+      }
       
-      if (data && data.data.Error) {
+      if (data && data.Error) {
         setError({
           ...error,
           status: true,
-          message: data.data.Error
+          message: data.Error
         });
       }
     })

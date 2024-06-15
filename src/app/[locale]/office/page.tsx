@@ -1,4 +1,4 @@
-"use client";
+
 
 import { ComplexNavbar } from "@/components/navber";
 
