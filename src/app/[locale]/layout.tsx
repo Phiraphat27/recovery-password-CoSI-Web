@@ -41,7 +41,9 @@ export default async function RootLayout({
     <html lang={locale}>
       <Auth />
       <NextIntlClientProvider messages={messages}>
-        <body className={NotoSansThai.className}>{children}</body>
+        <body className={NotoSansThai.className}>
+          {children}
+        </body>
       </NextIntlClientProvider>
     </html>
   );
