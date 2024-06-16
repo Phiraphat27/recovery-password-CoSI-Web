@@ -38,27 +38,27 @@ const profileMenuItems = [
     {
         label: "My Profile",
         icon: UserCircleIcon,
-        url: "/profile",
+        url: "/office/profile",
     },
     {
-        label: "Edit Profile",
+        label: "Setting",
         icon: Cog6ToothIcon,
-        url: "/edit-profile",
+        url: "/office/setting",
     },
-    {
-        label: "Inbox",
-        icon: InboxArrowDownIcon,
-        url: "/inbox",
-    },
+    // {
+    //     label: "Inbox",
+    //     icon: InboxArrowDownIcon,
+    //     url: "/inbox",
+    // },
     {
         label: "Help",
         icon: LifebuoyIcon,
-        url: "/help",
+        url: "/office/help",
     },
     {
         label: "Sign Out",
         icon: PowerIcon,
-        url: "/sign-out",
+        url: "/office/sign-out",
     },
 ];
 
@@ -94,10 +94,22 @@ function ProfileMenu({ src }: { src: string }) {
                     return (
                         <MenuItem
                             key={label}
-                            onClick={closeMenu}
+                            // onClick={closeMenu}
                             className={`flex items-center gap-2 rounded ${isLastItem
                                 ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                                : ""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
+                                : ""}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                            onClick={
+                                async () => {
+                                    if (label === "Sign Out") {
+                                        setIsMenuOpen(false);
+                                        await logout();
+                                        router.replace("/");
+                                        return;
+                                    }
+                                    setIsMenuOpen(false);
+                                    router.replace(url);
+                                }
+                            }>
                             {React.createElement(icon, {
                                 className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
                                 strokeWidth: 2,
@@ -107,16 +119,7 @@ function ProfileMenu({ src }: { src: string }) {
                                 variant="small"
                                 className="font-normal"
                                 color={isLastItem ? "red" : "inherit"} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-                                onClick={
-                                    async () => {
-                                        if (label === "Sign Out") {
-                                            await logout();
-                                            router.replace("/");
-                                            return;
-                                        }
-                                        router.replace(url);
-                                    }
-                                }                           >
+                            >
                                 {label}
                             </Typography>
                         </MenuItem>
@@ -254,7 +257,7 @@ export function ComplexNavbar() {
         );
 
         async function CallSession() {
-            await getSession().then((res: any) => {    
+            await getSession().then((res: any) => {
                 setSession(res.user);
             });
         }
