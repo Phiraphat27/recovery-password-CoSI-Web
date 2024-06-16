@@ -32,8 +32,10 @@ export default function SignIn() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const position = await getCurrentPosition();
-    console.log(`position: ${((position as { latitude: number; longitude: number })?.latitude) as number}, ${((position as { latitude: number; longitude: number })?.longitude) as number}`);
-    await login(formData).then((data: any) => {
+    await login(formData, position as {
+      position_name: string;
+      position_id: number;
+    }).then((data: any) => {
 
       if (data && data.Success) {
         router.replace("/office");
