@@ -43,7 +43,7 @@ const ViewerComponent: React.FC<EditorProps> = ({ data, editorblock }) => {
         refetch();
     }, [data]);
 
-    return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:!bg-black" />;
+    return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:bg-black" />;
 };
 
 export default ViewerComponent;

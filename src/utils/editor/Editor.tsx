@@ -68,7 +68,7 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
         };
     }, [data, editorblock, onChange]);
 
-    return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:!bg-black" />;
+    return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:bg-black" />;
 };
 
 export default memo(Editor);

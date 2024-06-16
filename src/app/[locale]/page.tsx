@@ -4,7 +4,7 @@ import { login } from "@/lib/auth";
 import { useRouter } from "@/navigation";
 import { FormEvent, useEffect, useState } from "react"
 import Alert from "@/components/Dialog/Alert";
-import Auth from "@/components/Auth";
+import Image from "next/image";
 import getCurrentPosition from "@/lib/geolocation";
 
 export default function SignIn() {
@@ -56,9 +56,11 @@ export default function SignIn() {
       <div className="flex min-h-full h-svh flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="border border-gray-500 dark:border-gray-300 rounded-lg p-6 sm:mx-auto sm:w-full sm:max-w-lg">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
+            <Image
               className="mx-auto h-10 w-auto"
-              src={`${!isDarkMode ? "images/Logo-Name-Bold_Gray-H.png" : "images/Logo-Name-Bold_Light-H.png"}`}
+              src={`${!isDarkMode ? "/images/Logo-Name-Bold_Gray-H.png" : "/images/Logo-Name-Bold_Light-H.png"}`}
+              width={1920}
+              height={1080}
               alt="CoSI"
             />
             <h2 className="mt-10 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900 dark:text-white">
