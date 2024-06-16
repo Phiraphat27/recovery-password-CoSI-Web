@@ -75,7 +75,13 @@ async function authenticateUser(email: string, password: string) {
     return null;
 }
 
-export async function login(formData: FormData) {
+export async function login(
+    formData: FormData,
+    position: {
+        position_name: string;
+        position_id: number;
+    }
+) {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     const user = await authenticateUser(email, password);
@@ -84,18 +90,22 @@ export async function login(formData: FormData) {
         return { Error: "Invalid Email or Password" };
     }
     // console.log(`request : ${request}`);
-    const sessionToken = await createSession(user as sessionData);
+    const sessionToken = await createSession(user as sessionData, position);
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     cookies().set("session", sessionToken, { expires, httpOnly: true }); // 7 days
     return { Success: true };
 }
 
-export async function createSession(user: sessionData) {
+export async function createSession(
+    user: sessionData,
+    position: {
+        position_name: string;
+        position_id: number;
+    }
+) {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     const userdevice = userAgent({ headers: headers() });
-    // const CurrentPosition = getCurrentPosition();
-    // console.log(`CurrentPosition : ${CurrentPosition}`);
-    user = { ...user, userdevice } as any;
+    user = { ...user, userdevice, position } as any;
     const sessionToken = await encryptJWT({ user, expires });
     const session = await prisma.session.create({
         data: {
