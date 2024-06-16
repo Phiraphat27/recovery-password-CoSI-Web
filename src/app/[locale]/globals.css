@@ -73,6 +73,10 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
+.font-sans {
+  font-family: '__Noto_Sans_Thai_Looped_3d9ae4', '__Noto_Sans_Thai_Looped_Fallback_3d9ae4' !important;
+}
+
 /* editorJS */
 .editor {
   box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.02);
