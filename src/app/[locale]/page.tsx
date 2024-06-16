@@ -4,6 +4,8 @@ import { login } from "@/lib/auth";
 import { useRouter } from "@/navigation";
 import { FormEvent, useEffect, useState } from "react"
 import Alert from "@/components/Dialog/Alert";
+import Auth from "@/components/Auth";
+import getCurrentPosition from "@/lib/geolocation";
 
 export default function SignIn() {
   const [values, setValues] = useState({
@@ -29,12 +31,14 @@ export default function SignIn() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const position = await getCurrentPosition();
+    console.log(`position: ${((position as { latitude: number; longitude: number })?.latitude) as number}, ${((position as { latitude: number; longitude: number })?.longitude) as number}`);
     await login(formData).then((data: any) => {
 
       if (data && data.Success) {
         router.replace("/office");
       }
-      
+
       if (data && data.Error) {
         setError({
           ...error,
@@ -47,6 +51,7 @@ export default function SignIn() {
 
   return (
     <>
+      {/* <Auth /> */}
       <Alert open={error} setOpen={setError} info={error.message} />
       <div className="flex min-h-full h-svh flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="border border-gray-500 dark:border-gray-300 rounded-lg p-6 sm:mx-auto sm:w-full sm:max-w-lg">
@@ -67,7 +72,7 @@ export default function SignIn() {
                 <div className="w-full">
                   <div className="relative w-full min-w-[200px] h-10">
                     <input
-                      className={`peer w-full h-full bg-transparent text-md text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 ${values.email.length > 0 && "border-t-transparent"} focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900 dark:focus:border-gray-200 dark:focus:border-t-transparent`}
+                      className={`peer w-full h-full bg-transparent text-md text-blue-gray-700  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 ${values.email.length > 0 && "border-t-transparent"} focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900 dark:focus:border-gray-200 dark:focus:border-t-transparent`}
                       placeholder=" "
                       id="email"
                       name="email"
@@ -95,7 +100,7 @@ export default function SignIn() {
                       type="password"
                       autoComplete="current-password"
                       required
-                      className={`peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 ${values.password.length > 0 && "border-t-transparent"} focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900 dark:focus:border-gray-200 dark:focus:border-t-transparent`}
+                      className={`peer w-full h-full bg-transparent text-blue-gray-700  font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 ${values.password.length > 0 && "border-t-transparent"} focus:border-t-transparent text-sm px-3 py-2.5 rounded-[7px] border-blue-gray-200 focus:border-gray-900 dark:focus:border-gray-200 dark:focus:border-t-transparent`}
                       placeholder=" "
                       onChange={(e) => setValues({ ...values, password: e.target.value })}
                       onFocus={(e) => e.target.placeholder = "********"}
@@ -106,7 +111,7 @@ export default function SignIn() {
                       {Dict("password")}
                     </label>
                   </div>
-                  <p className="flex items-center gap-[0.6rem] mt-2 font-sans text-sm antialiased font-normal leading-normal text-gray-700 dark:text-gray-400">
+                  <p className="flex items-center gap-[0.6rem] mt-2  text-sm antialiased font-normal leading-normal text-gray-700 dark:text-gray-400">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 -mt-px">
                       <path fillRule="evenodd"
                         d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z"
@@ -135,10 +140,10 @@ export default function SignIn() {
                   </label>
                   <label className="mt-px font-light text-gray-700 cursor-pointer select-none" htmlFor="description">
                     <div>
-                      <p className="block font-sans text-sm antialiased font-medium leading-relaxed text-blue-gray-900 dark:text-gray-200">
+                      <p className="block  text-sm antialiased font-medium leading-relaxed text-blue-gray-900 dark:text-gray-200">
                         {Dict("rememberMe")}
                       </p>
-                      <p className="block font-sans text-xs antialiased font-normal leading-normal text-gray-700 dark:text-gray-400">
+                      <p className="block  text-xs antialiased font-normal leading-normal text-gray-700 dark:text-gray-400">
                         {Dict("rememberMeInfo")}
                       </p>
                     </div>
