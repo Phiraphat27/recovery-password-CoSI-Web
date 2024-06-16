@@ -26,34 +26,39 @@ import {
     RocketLaunchIcon,
     Bars2Icon,
 } from "@heroicons/react/24/solid";
-// @ts-ignore
-import Cookies from 'js-cookie';
-import { getSession } from "@/lib/auth";
+
+import { getSession, logout } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { sessionData } from "@/type/sessionData";
 import { useLocale } from "next-intl";
+import { useRouter } from "@/navigation";
 
 // profile menu component
 const profileMenuItems = [
     {
         label: "My Profile",
         icon: UserCircleIcon,
+        url: "/profile",
     },
     {
         label: "Edit Profile",
         icon: Cog6ToothIcon,
+        url: "/edit-profile",
     },
     {
         label: "Inbox",
         icon: InboxArrowDownIcon,
+        url: "/inbox",
     },
     {
         label: "Help",
         icon: LifebuoyIcon,
+        url: "/help",
     },
     {
         label: "Sign Out",
         icon: PowerIcon,
+        url: "/sign-out",
     },
 ];
 
@@ -61,6 +66,7 @@ function ProfileMenu({ src }: { src: string }) {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const closeMenu = () => setIsMenuOpen(false);
+    const router = useRouter();
 
     return (
         <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
@@ -83,7 +89,7 @@ function ProfileMenu({ src }: { src: string }) {
                 </Button>
             </MenuHandler>
             <MenuList className="p-1 dark:bg-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                {profileMenuItems.map(({ label, icon }, key) => {
+                {profileMenuItems.map(({ label, icon, url }, key) => {
                     const isLastItem = key === profileMenuItems.length - 1;
                     return (
                         <MenuItem
@@ -100,7 +106,17 @@ function ProfileMenu({ src }: { src: string }) {
                                 as="span"
                                 variant="small"
                                 className="font-normal"
-                                color={isLastItem ? "red" : "inherit"} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                            >
+                                color={isLastItem ? "red" : "inherit"} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
+                                onClick={
+                                    async () => {
+                                        if (label === "Sign Out") {
+                                            await logout();
+                                            router.replace("/");
+                                            return;
+                                        }
+                                        router.replace(url);
+                                    }
+                                }                           >
                                 {label}
                             </Typography>
                         </MenuItem>
@@ -151,7 +167,7 @@ function NavListMenu() {
             <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
                 <MenuHandler>
                     <Typography as="a" href="#" variant="small" className="font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                        <MenuItem className="hidden items-center gap-2 font-medium text-gray-900 lg:flex lg:rounded-full" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        <MenuItem className="hidden items-center gap-2 font-medium text-gray-900 dark:text-white lg:flex lg:rounded-full" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                             <Square3Stack3DIcon className="h-[18px] w-[18px] text-blue-gray-500" />{" "}
                             Pages{" "}
                             <ChevronDownIcon
@@ -216,7 +232,7 @@ function NavList() {
                     className="font-medium text-blue-gray-500" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                     <MenuItem className="flex items-center gap-2 lg:rounded-full" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {React.createElement(icon, { className: "h-[18px] w-[18px]" })}{" "}
-                        <span className="text-gray-900"> {label}</span>
+                        <span className="text-gray-900 dark:text-white"> {label}</span>
                     </MenuItem>
                 </Typography>
             ))}
@@ -238,8 +254,7 @@ export function ComplexNavbar() {
         );
 
         async function CallSession() {
-            await getSession().then((res: any) => {
-                console.log(res.user);
+            await getSession().then((res: any) => {    
                 setSession(res.user);
             });
         }
@@ -250,14 +265,14 @@ export function ComplexNavbar() {
 
     return (
         <Navbar className="mx-auto max-w-screen-xl xl:my-6 p-2 lg:rounded-full lg:pl-6 bg-[#f9f9f9] dark:bg-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <div className="relative mx-auto flex items-center justify-between text-gray-900">
+            <div className="relative mx-auto flex items-center justify-between text-gray-900 dark:text-white">
                 <Typography
                     as="a"
                     href="#"
                     className="mr-4 ml-2 cursor-pointer py-1.5 font-medium" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                     Material Tailwind
                 </Typography>
-                <div className="hidden lg:block">
+                <div className="hidden lg:block ">
                     <NavList />
                 </div>
                 <IconButton
