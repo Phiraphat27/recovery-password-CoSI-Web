@@ -1,23 +1,25 @@
 "use client";
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from '@/navigation';
 import { getSession } from '@/lib/auth';
+import { usePathname } from '@/navigation';
 
 const Auth = () => {
     const router = useRouter();
+    const pathname = usePathname();
     useEffect(() => {
         async function session() {
-            await getSession().then((res: any) => {
-                if (res && res.user) {
+            const res = await getSession();
+            if (res && res.user) {
+                if (pathname === '/') {
                     router.push('/office');
                 }
-                else {
-                    router.push('/');
-                }
-            });
+            } else {
+                router.push('/');
+            }
         }
         session();
-    }, []);
+    }, [router]);
     return (
         <></>
     );
