@@ -34,8 +34,12 @@ export async function encryptJWT(payload: any) {
 }
 
 export async function decryptJWT(input: string): Promise<any> {
-    const { payload } = await jwtVerify(input, key, {
-        algorithms: ["HS256"],
-    });
-    return payload;
+    try {
+        const { payload } = await jwtVerify(input, key, {
+            algorithms: ["HS256"],
+        });
+        return payload;
+    } catch (error) {
+        return null;
+    }
 }

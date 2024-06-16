@@ -1,10 +1,10 @@
 "use server";
 import prisma from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
 import { generator_id, isIdUniqueUser } from '@/lib/dbid';
 import { encrypt, decrypt, encryptJWT, decryptJWT } from '@/lib/secret';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { sessionData } from '@/type/sessionData';
+import { userAgent } from 'next/server';
 
 export async function registerUser(
     email: string,
@@ -83,6 +83,7 @@ export async function login(formData: FormData) {
     if (!user) {
         return { Error: "Invalid Email or Password" };
     }
+    // console.log(`request : ${request}`);
     const sessionToken = await createSession(user as sessionData);
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     cookies().set("session", sessionToken, { expires, httpOnly: true }); // 7 days
@@ -91,6 +92,10 @@ export async function login(formData: FormData) {
 
 export async function createSession(user: sessionData) {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const userdevice = userAgent({ headers: headers() });
+    // const CurrentPosition = getCurrentPosition();
+    // console.log(`CurrentPosition : ${CurrentPosition}`);
+    user = { ...user, userdevice } as any;
     const sessionToken = await encryptJWT({ user, expires });
     const session = await prisma.session.create({
         data: {
@@ -104,17 +109,22 @@ export async function createSession(user: sessionData) {
 
 export async function getSession(): Promise<any> {
     const sessionToken = cookies().get("session");
+    if (!sessionToken) {
+        return null;
+    }
     return await decryptJWT(sessionToken?.value as string);
-    // const session = await prisma.session.findUnique({
-    //     where: { sessionToken },
-    //     include: { user: true },
-    // });
-    // if (session && session.expires > new Date()) {
-    //     return session.user;
-    // }
-    return null;
 }
 
 export async function deleteSession(sessionToken: string) {
     return await prisma.session.delete({ where: { sessionToken } });
+}
+
+export async function logout() {
+    const sessionToken = cookies().get("session");
+    if (sessionToken) {
+        await deleteSession(sessionToken.value as string).then(() => {
+            cookies().set("session", "", { expires: new Date(0) });
+        });
+    }
+    return { Success: true };
 }
