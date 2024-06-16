@@ -6,10 +6,12 @@ export default createMiddleware({
     // ...
 
     // Used when no locale matches
-    defaultLocale: 'en'
+    defaultLocale: 'en',
+    
 });
+
 
 export const config = {
     // Match only internationalized pathnames
-    matcher: ['/', '/(th|en)/:path*']
+    matcher: ['/', '/(th|en)/:path*', '/((?!api|_next/static|_next/images|.*\\.png$).*)']
 };
