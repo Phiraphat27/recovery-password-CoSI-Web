@@ -14,8 +14,13 @@ export default function ChangePassword() {
         hasSpecialChar: false,
         hasLength: false,
     });
-
     const [passwordError, setPasswordError] = useState(true);
+
+    const handlePassword = (e: React.FormEvent) => {
+        e.preventDefault();
+        const password = (e.currentTarget as HTMLInputElement).value;
+        setCurrentPassword(password);
+    }
 
     const handleCheckPassword = (e: React.FormEvent) => {
         e.preventDefault();
@@ -40,7 +45,7 @@ export default function ChangePassword() {
         const hasLength = password.length >= 8;
 
         if (hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar && hasLength) {
-
+            setNewPassword(password);
         }
 
         setPasswordValid({
@@ -58,6 +63,7 @@ export default function ChangePassword() {
         e.preventDefault();
         const newPassword = (document.getElementById('new-password') as HTMLInputElement).value;
         const confirmNewPassword = (e.currentTarget as HTMLInputElement).value;
+        setConfirmNewPassword(confirmNewPassword);
 
         if (newPassword !== confirmNewPassword) {
             setPasswordError(true);
@@ -66,6 +72,7 @@ export default function ChangePassword() {
         else {
             setPasswordError(false);
         }
+        
     }
 
     return (
@@ -74,7 +81,7 @@ export default function ChangePassword() {
                 <div className='font-semibold text-lg'>Change Password</div>
                 <div className='font-medium text-md'>Update your profile information below.</div>
                 <div className="pt-6 mb-1 flex flex-col gap-6">
-                    <Typography variant="h6" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="h6" className="-mb-3 font-normal text-sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         Password
                     </Typography>
                     <Input
@@ -87,7 +94,7 @@ export default function ChangePassword() {
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
-                    <Typography variant="h6" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="h6" className="-mb-3 font-normal text-sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         New Password
                     </Typography>
                     <Input
@@ -101,7 +108,7 @@ export default function ChangePassword() {
                         labelProps={{
                             className: "before:content-none after:content-none",
                         }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
-                    <Typography variant="h6" className="-mb-3" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <Typography variant="h6" className="-mb-3 font-normal text-sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         Confirm New Password
                     </Typography>
                     <Input
@@ -110,7 +117,7 @@ export default function ChangePassword() {
                         name="confirm-new-password"
                         size="lg"
                         placeholder="********"
-                        className={`${passwordError ? " !border-red-500 focus:!border-red-600" : "!border-gray-500 focus:!border-gray-900 dark:!border-gray-500 dark:focus:!border-gray-50"} 
+                        className={`${passwordError && passwordValid.hasUpperCase && passwordValid.hasLowerCase && passwordValid.hasNumber && passwordValid.hasSpecialChar && passwordValid.hasLength && confirmNewPassword.length > 0 ? " !border-red-500 focus:!border-red-600" : "!border-gray-500 focus:!border-gray-900 dark:!border-gray-500 dark:focus:!border-gray-50"} 
                             ${!passwordValid.hasUpperCase || !passwordValid.hasLowerCase || !passwordValid.hasNumber || !passwordValid.hasSpecialChar || !passwordValid.hasLength ? " !bg-gray-300 pointer-events-none" : ""}`}
                         onChange={handlePasswordConfirm}
                         labelProps={{
