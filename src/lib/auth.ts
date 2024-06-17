@@ -78,8 +78,8 @@ async function authenticateUser(email: string, password: string) {
 export async function login(
     formData: FormData,
     position: {
-        position_name: string;
-        position_id: number;
+        latitude: number;
+        longitude: number;
     }
 ) {
     const email = formData.get('email') as string;
@@ -99,8 +99,8 @@ export async function login(
 export async function createSession(
     user: sessionData,
     position: {
-        position_name: string;
-        position_id: number;
+        latitude: number;
+        longitude: number;
     }
 ) {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);

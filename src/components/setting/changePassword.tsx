@@ -24,12 +24,6 @@ export default function ChangePassword() {
 
     const handleCheckPassword = (e: React.FormEvent) => {
         e.preventDefault();
-        // Add your password check logic here
-        // Minimum 8 characters
-        // At least one uppercase letter
-        // At least one lowercase letter
-        // At least one number
-        // At least one special character  ( ! @ # $ % ^ & * ( ) - _ = + )
 
         // Password check logic
         const password = (e.currentTarget as HTMLInputElement).value;

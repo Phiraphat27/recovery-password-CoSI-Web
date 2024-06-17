@@ -1,5 +1,6 @@
+// components/TabsWithIcon.tsx
 "use client";
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import {
     Tabs,
     TabsHeader,
@@ -12,57 +13,46 @@ import {
     KeyIcon,
     FingerPrintIcon
 } from "@heroicons/react/24/solid";
-import ChangePassword from "@/components/setting/changePassword";
-import TwoFactor from "@/components/setting/twoFactor";
-import Sessions from "@/components/setting/sessions";
+import Loading from "@/components/Loading"; // Import the loading component
 
-export function TabsWithIcon() {
+const ChangePassword = lazy(() => import("@/components/setting/changePassword"));
+const TwoFactor = lazy(() => import("@/components/setting/twoFactor"));
+const Sessions = lazy(() => import("@/components/setting/sessions"));
+
+export default function TabsWithIcon() {
     const data = [
         {
             label: "Password",
             value: "password",
             icon: KeyIcon,
-            desc:
-                <>
-                    <ChangePassword />
-                </>
+            desc: <ChangePassword />
         },
         {
             label: "Two-factor",
             value: "twoFactor",
             icon: FingerPrintIcon,
-            desc:
-                <>
-                    <TwoFactor />
-                </>,
+            desc: <TwoFactor />
         },
         {
             label: "Sessions",
             value: "sessions",
             icon: Square3Stack3DIcon,
-            desc:
-                <>
-                    <Sessions />
-                </>,
+            desc: <Sessions />
         },
     ];
     return (
         <div className="max-w-7xl mx-auto">
-            <Tabs
-                value="dashboard"
-                className=""
-            >
-                <TabsHeader className="dark:bg-white bg-gray-300"
+            <Tabs value="password">
+                <TabsHeader
+                    className="dark:bg-white bg-gray-300"
                     indicatorProps={{
                         className: "dark:bg-gray-900/20 dark:shadow-none",
-                    }}
-                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                     {data.map(({ label, value, icon }) => (
                         <Tab
                             key={value}
                             value={value}
-                            className="dark:text-gray-700" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-                        >
+                            className="dark:text-gray-700" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
                             <div className="flex items-center gap-2">
                                 {React.createElement(icon, { className: "w-5 h-5" })}
                                 {label}
@@ -70,16 +60,16 @@ export function TabsWithIcon() {
                         </Tab>
                     ))}
                 </TabsHeader>
-                <TabsBody className="dark:text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                    {data.map(({ value, desc }) => (
-                        <TabPanel className="dark:text-white" key={value} value={value}>
-                            {desc}
-                        </TabPanel>
-                    ))}
-                </TabsBody>
+                <Suspense fallback={<Loading />}>
+                    <TabsBody className="dark:text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                        {data.map(({ value, desc }) => (
+                            <TabPanel className="dark:text-white" key={value} value={value}>
+                                {desc}
+                            </TabPanel>
+                        ))}
+                    </TabsBody>
+                </Suspense>
             </Tabs>
         </div>
     );
 }
-
-export default TabsWithIcon;

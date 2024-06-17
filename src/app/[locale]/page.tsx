@@ -33,8 +33,8 @@ export default function SignIn() {
     const formData = new FormData(e.currentTarget);
     const position = await getCurrentPosition();
     await login(formData, position as {
-      position_name: string;
-      position_id: number;
+      latitude: number;
+      longitude: number;
     }).then((data: any) => {
 
       if (data && data.Success) {
