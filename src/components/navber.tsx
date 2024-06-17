@@ -258,6 +258,9 @@ export function ComplexNavbar() {
 
         async function CallSession() {
             await getSession().then((res: any) => {
+                if (res === null) {
+                    return;
+                }
                 setSession(res.user);
             });
         }

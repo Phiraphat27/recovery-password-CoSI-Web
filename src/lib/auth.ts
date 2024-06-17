@@ -118,6 +118,15 @@ export async function createSession(
 }
 
 export async function getSession(): Promise<any> {
+    const sessionStore = await prisma.session.findFirst({
+        where: { sessionToken: cookies().get("session")?.value as string },
+        include: { user: true },
+    });
+
+    if (!sessionStore) {
+        return null;
+    }
+    
     const sessionToken = cookies().get("session");
     if (!sessionToken) {
         return null;
