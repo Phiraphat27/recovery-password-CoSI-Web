@@ -13,6 +13,7 @@ import {
     FingerPrintIcon
 } from "@heroicons/react/24/solid";
 import ChangePassword from "@/components/setting/changePassword";
+import TwoFactor from "@/components/setting/twoFactor";
 
 export function TabsWithIcon() {
     const data = [
@@ -20,17 +21,19 @@ export function TabsWithIcon() {
             label: "Password",
             value: "password",
             icon: KeyIcon,
-            desc: 
-            <>
-            <ChangePassword />
-            </>
+            desc:
+                <>
+                    <ChangePassword />
+                </>
         },
         {
             label: "Two-factor",
             value: "twoFactor",
             icon: FingerPrintIcon,
-            desc: `Because it's about motivating the doers. Because I'm here
-      to follow my dreams and inspire other people to follow their dreams, too.`,
+            desc: 
+            <>
+                <TwoFactor />
+            </>,
         },
         {
             label: "Sessions",
@@ -50,7 +53,7 @@ export function TabsWithIcon() {
                             key={value}
                             value={value}
                             className="dark:text-gray-700" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}
-                            >
+                        >
                             <div className="flex items-center gap-2">
                                 {React.createElement(icon, { className: "w-5 h-5" })}
                                 {label}
