@@ -14,6 +14,7 @@ import {
 } from "@heroicons/react/24/solid";
 import ChangePassword from "@/components/setting/changePassword";
 import TwoFactor from "@/components/setting/twoFactor";
+import Sessions from "@/components/setting/sessions";
 
 export function TabsWithIcon() {
     const data = [
@@ -30,24 +31,32 @@ export function TabsWithIcon() {
             label: "Two-factor",
             value: "twoFactor",
             icon: FingerPrintIcon,
-            desc: 
-            <>
-                <TwoFactor />
-            </>,
+            desc:
+                <>
+                    <TwoFactor />
+                </>,
         },
         {
             label: "Sessions",
             value: "sessions",
             icon: Square3Stack3DIcon,
-            desc: `We're not always in the position that we want to be at.
-      We're constantly growing. We're constantly making mistakes. We're
-      constantly trying to express ourselves and actualize our dreams.`,
+            desc:
+                <>
+                    <Sessions />
+                </>,
         },
     ];
     return (
-        <div className="max-w-7xl mx-auto dark:text-white">
-            <Tabs value="dashboard">
-                <TabsHeader className=" bg-gray-200 dark:bg-transparent dark:text-white dark:border-white dark:border" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <div className="max-w-7xl mx-auto">
+            <Tabs
+                value="dashboard"
+                className=""
+            >
+                <TabsHeader className="dark:bg-white bg-gray-300"
+                    indicatorProps={{
+                        className: "dark:bg-gray-900/20 dark:shadow-none",
+                    }}
+                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     {data.map(({ label, value, icon }) => (
                         <Tab
                             key={value}
