@@ -273,7 +273,7 @@ export function ComplexNavbar() {
                     as="a"
                     href="#"
                     className="mr-4 ml-2 cursor-pointer py-1.5 font-medium" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                    Material Tailwind
+                    CoSI Lab 
                 </Typography>
                 <div className="hidden lg:block ">
                     <NavList />
