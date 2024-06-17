@@ -269,28 +269,28 @@ export function ComplexNavbar() {
     return (
         <Navbar className="mx-auto max-w-screen-xl xl:my-6 p-2 lg:rounded-full lg:pl-6 bg-[#f9f9f9] dark:bg-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <div className="relative mx-auto flex items-center justify-between text-gray-900 dark:text-white">
-                <Typography
-                    as="a"
-                    href="#"
-                    className="mr-4 ml-2 cursor-pointer py-1.5 font-medium" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                    CoSI Lab 
-                </Typography>
-                <div className="hidden lg:block ">
-                    <NavList />
-                </div>
                 <IconButton
                     size="sm"
                     color="blue-gray"
                     variant="text"
                     onClick={toggleIsNavOpen}
-                    className="ml-auto mr-2 lg:hidden" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
+                    className="lg:hidden" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                     <Bars2Icon className="h-6 w-6" />
                 </IconButton>
+                <Typography
+                    as="a"
+                    href="#"
+                    className="mr-4 ml-2 cursor-pointer py-1.5 font-medium" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
+                    CoSI Lab
+                </Typography>
+                <div className="hidden lg:block ">
+                    <NavList />
+                </div>
 
                 <Typography
                     as="span"
                     variant="small"
-                    className="lg:ml-auto font-medium pr-4" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
+                    className="ml-auto lg:ml-auto font-medium pr-4" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
                     {session ? session.profile.filter((x) => {
                         return x.language_code === localActive
                     })[0].name : "Guest"}
