@@ -29,7 +29,7 @@ export async function registerUser(
     });
 }
 
-export async function forgotPassword(email: string, password: string) {
+export async function forgotPassword(email: string ,password: string) {
     const user = await prisma.user.findFirst({ where: { user_email: email } });
     if (user) {
         const hashedPassword = await encrypt(password);
@@ -37,9 +37,38 @@ export async function forgotPassword(email: string, password: string) {
             where: { user_id: user.user_id },
             data: { user_password: hashedPassword },
         });
-        return user;
+        return true;
     }
-    return null;
+    return false;
+}
+
+export async function changePassword(
+    oldPassword: string,
+    newPassword: string,
+    email?: string
+) {
+    const userSession = await getSession();
+    if (!email) {
+        email = userSession.user.user_email;
+    }
+    const user = await prisma.user.findFirst({ where: { user_email: email } });
+    if (user && await decrypt(user.user_password) === oldPassword) {
+        const hashedPassword = await encrypt(newPassword);
+        await prisma.user.update({
+            where: { user_id: user.user_id },
+            data: { user_password: hashedPassword },
+        });
+        return {
+            Success: true,
+            Message: "Password Successfully",
+        };
+    }
+    else{
+        return {
+            Success: false,
+            Message: "Password incorrect",
+        };
+    }
 }
 
 async function authenticateUser(email: string, password: string) {
