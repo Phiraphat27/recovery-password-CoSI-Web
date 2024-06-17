@@ -9,20 +9,21 @@ import {
 } from "@material-tailwind/react";
 import {
     Square3Stack3DIcon,
-    UserCircleIcon,
-    Cog6ToothIcon,
+    KeyIcon,
     FingerPrintIcon
 } from "@heroicons/react/24/solid";
+import ChangePassword from "@/components/setting/changePassword";
 
 export function TabsWithIcon() {
     const data = [
         {
-            label: "Accounts",
-            value: "accounts",
-            icon: UserCircleIcon,
-            desc: `It really matters and then like it really doesn't matter.
-      What matters is the people who are sparked by it. And the people
-      who are like offended by it, it doesn't matter.`,
+            label: "Password",
+            value: "password",
+            icon: KeyIcon,
+            desc: 
+            <>
+            <ChangePassword />
+            </>
         },
         {
             label: "Two-factor",
