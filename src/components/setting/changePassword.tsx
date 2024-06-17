@@ -76,7 +76,7 @@ export default function ChangePassword() {
     }
 
     return (
-        <div className="flex justify-evenly">
+        <div className="flex justify-evenly flex-col md:flex-row">
             <div className="w-full max-w-sm">
                 <div className='font-semibold text-lg'>Change Password</div>
                 <div className='font-medium text-md text-gray-500 dark:text-gray-200'>Update your profile information below.</div>
@@ -131,11 +131,11 @@ export default function ChangePassword() {
                     </Button>
                 </div>
             </div>
-            <div className="w-full max-w-sm">
+            <div className="w-full max-w-sm pt-4 md:pt-0">
                 <div className='font-semibold text-lg'>Password Requirement </div>
                 <div className='font-medium text-md text-gray-500 dark:text-gray-200'>Please follow this guide for a strong password: </div>
                 <div className='pt-6 font-normal text-sm'>
-                    <ul className='list-disc gap-2'>
+                    <ul className='list-disc gap-2 pl-8'>
                         {
                             passwordValid.hasUpperCase ? <li className='text-green-500'> At least one uppercase letter</li> : <li className='text-red-500'>At least one uppercase letter</li>
                         }
@@ -146,7 +146,7 @@ export default function ChangePassword() {
                             passwordValid.hasNumber ? <li className='text-green-500'>At least one number</li> : <li className='text-red-500'>At least one number</li>
                         }
                         {
-                            passwordValid.hasSpecialChar ? <li className='text-green-500'>At least one special character  ( ! @ # $ % ^ & * ( ) - _ = + )</li> : <li className='text-red-500'>At least one special character  ( ! @ # $ % ^ & * ( ) - _ = + )</li>
+                            passwordValid.hasSpecialChar ? <li className='text-green-500'>At least one special character  ( ! @ # $ % ^ & * ( ) - _ = + )</li> : <li className='text-red-500'>At least one special character <br/>  ( ! @ # $ % ^ & * ( ) - _ = + )</li>
                         }
                         {
                             passwordValid.hasLength ? <li className='text-green-500'>Minimum 8 characters</li> : <li className='text-red-500'>Minimum 8 characters</li>
