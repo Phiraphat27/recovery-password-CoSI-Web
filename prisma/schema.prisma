@@ -144,6 +144,10 @@ model session {
   sessionToken String   @unique @db.VarChar(2000)
   userId       String   @db.VarChar(14)
   expires      DateTime @db.DateTime(0)
+  browser      String   @db.Text
+  os           String   @db.Text
+  lat          Float
+  lon          Float
   user         user     @relation(fields: [userId], references: [user_id], onDelete: Cascade, map: "session_ibfk_1")
 
   @@index([userId], map: "userId")
