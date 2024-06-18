@@ -131,6 +131,7 @@ model user {
   profile                      profile[]
   session                      session[]
   time_entry                   time_entry[]
+  two_factor                   two_factor?
   position                     position?    @relation(fields: [user_position], references: [position_id], onDelete: Cascade, map: "user_ibfk_1")
   permission                   permission?  @relation(fields: [user_permission], references: [permission_id], onDelete: Cascade, map: "user_ibfk_2")
 
@@ -151,4 +152,13 @@ model session {
   user         user     @relation(fields: [userId], references: [user_id], onDelete: Cascade, map: "session_ibfk_1")
 
   @@index([userId], map: "userId")
+}
+
+model two_factor {
+  user_id    String  @id @db.VarChar(14)
+  email      String? @db.Text
+  auth_app   String? @db.Text
+  enable     Boolean
+  secret_app String? @db.LongText
+  user       user    @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "two_factor_ibfk_1")
 }
