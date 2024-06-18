@@ -13,7 +13,7 @@ import {
     KeyIcon,
     FingerPrintIcon
 } from "@heroicons/react/24/solid";
-import Loading from "@/components/Loading"; // Import the loading component
+import Loading from "@/components/loading"; // Import the loading component
 
 const ChangePassword = lazy(() => import("@/components/setting/changePassword"));
 const TwoFactor = lazy(() => import("@/components/setting/twoFactor"));

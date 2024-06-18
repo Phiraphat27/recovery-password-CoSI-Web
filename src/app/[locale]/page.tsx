@@ -1,9 +1,9 @@
 "use client"
 import { useDictionary } from "@/lang/useDictionary";
-import { login } from "@/lib/auth";
+import { login } from "@/server-action/auth";
 import { useRouter } from "@/navigation";
 import { FormEvent, useEffect, useState } from "react"
-import Alert from "@/components/Dialog/Alert";
+import Alert from "@/components/dialog/alert";
 import Image from "next/image";
 import getCurrentPosition from "@/lib/geolocation";
 

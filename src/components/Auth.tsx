@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from 'react';
 import { useRouter } from '@/navigation';
-import { getSession } from '@/lib/auth';
+import { getSession } from '@/server-action/auth';
 import { usePathname } from '@/navigation';
 
 const Auth = () => {

@@ -1,4 +1,4 @@
-import { ComplexNavbar } from "@/components/Navber"
+import { ComplexNavbar } from "@/components/navber"
 import { Suspense } from "react"
 
 export default function RootLayout({

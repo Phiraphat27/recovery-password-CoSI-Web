@@ -1,4 +1,4 @@
-import { forgotPassword } from "@/lib/auth";
+import { forgotPassword } from "@/server-action/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {

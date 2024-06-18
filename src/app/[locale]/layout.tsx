@@ -3,7 +3,7 @@ import { Noto_Sans_Thai_Looped } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import "./globals.css";
-import Auth from "@/components/Auth";
+import Auth from "@/components/auth";
 import { Suspense } from "react";
 
 // const inter = Inter({ subsets: ["latin"] });

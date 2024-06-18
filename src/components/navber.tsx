@@ -27,7 +27,7 @@ import {
     Bars2Icon,
 } from "@heroicons/react/24/solid";
 
-import { getSession, logout } from "@/lib/auth";
+import { getSession, logout } from "@/server-action/auth";
 import { cookies } from "next/headers";
 import { sessionData } from "@/type/sessionData";
 import { useLocale } from "next-intl";

@@ -1,4 +1,4 @@
-import { changePassword, forgotPassword } from '@/lib/auth';
+import { changePassword, forgotPassword } from '@/server-action/auth';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import { FormEvent, useState } from 'react';
 

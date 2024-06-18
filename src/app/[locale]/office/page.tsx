@@ -1,6 +1,6 @@
 
 
-import { ComplexNavbar } from "@/components/Navber";
+import { ComplexNavbar } from "@/components/navber";
 
 export default function Example() {
     return (
