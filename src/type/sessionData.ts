@@ -21,3 +21,14 @@ export type sessionData = Prisma.userGetPayload<{
         }
     }
 }>
+
+export type listSessionData = {
+    sessionToken: string;
+    browser: string;
+    os: string;
+    isCurrent: boolean;
+    location:{
+        city: string;
+        country: string;
+    }
+}
