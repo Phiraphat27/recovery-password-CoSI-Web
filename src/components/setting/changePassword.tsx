@@ -61,6 +61,10 @@ export default function ChangePassword() {
 
     const handleUpdatePassword = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (Object.values(formState.passwordValid).includes(false) || formState.passwordError) return;
+        if(!formState.currentPassword || !formState.newPassword || !formState.confirmNewPassword) return;
+
         setFormState(prevState => ({
             ...prevState,
             loading: true,
