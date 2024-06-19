@@ -152,14 +152,17 @@ const TwoFactor: React.FC = () => {
                                             type={item.unit === "phone" ? "tel" : "email"}
                                             id={`${item.unit}-input`}
                                             label={item.unit === "phone" ? "Phone Number" : "Email"}
-                                            className="pr-20 w-[300px]"
-                                            containerProps={{ className: "min-w-0" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                                            className="pr-20 w-[300px] dark:focus:border-gray-200 dark:focus:border-t-transparent "
+                                            labelProps={{ className: "dark:text-gray-200 dark:peer-focus:text-white dark:peer-focus:before:!border-gray-200 dark:peer-focus:after:!border-gray-200" }}
+                                            containerProps={{ className: "min-w-0 dark:text-white" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} 
+                                            />
+                                        
                                         <Button
                                             size="sm"
                                             id={`edit-${item.unit}-button`}
                                             color="gray"
                                             onClick={(e) => handEdit(item.unit, e)}
-                                            className="!absolute right-1 top-1 rounded" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                                >
+                                            className="!absolute right-1 top-1 rounded dark:bg-white dark:text-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                                >
                                             Edit
                                         </Button></>
                                 ) : (
@@ -182,7 +185,7 @@ const TwoFactor: React.FC = () => {
                                 size="sm"
                                 id={`${item.unit}-button`}
                                 variant="outlined"
-                                className="!overflow-visible"
+                                className="!overflow-visible dark:text-gray-100 dark:border-gray-200"
                                 onClick={(e) => handleButton(e, item.unit)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                            >
                                 {item.unit !== "auth_app" ? "Edit" : dataTwoFactor.auth_app ? "View" : "Generate"}
                             </Button>
