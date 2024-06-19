@@ -275,7 +275,7 @@ export function ComplexNavbar() {
     }, []);
 
     return (
-        <Navbar className="mx-auto max-w-screen-xl xl:my-6 p-2 lg:rounded-full lg:pl-6 bg-[#f9f9f9] dark:bg-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Navbar className="mx-auto max-w-screen-xl xl:my-6 p-2 mb-4 lg:rounded-full lg:pl-6 bg-[#f9f9f9] dark:bg-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <div className="relative mx-auto flex items-center justify-between text-gray-900 dark:text-white">
                 <IconButton
                     size="sm"
