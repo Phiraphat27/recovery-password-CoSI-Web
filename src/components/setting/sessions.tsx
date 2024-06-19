@@ -51,7 +51,7 @@ const Sessions = () => {
         <div className="flex items-center justify-between pb-6 border-b-[2px] border-gray-200">
             <div className="flex items-center gap-3">
                 <div className="flex items-center w-12 h-12 border border-gray-200 rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 50 50" className="w-6 h-6 m-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 50 50" className="w-6 h-6 m-auto dark:bg-white">
                         {os.toLocaleLowerCase() === "windows" && (
                             <path d="M4 4H24V24H4zM26 4H46V24H26zM4 26H24V46H4zM26 26H46V46H26z"></path>
                         )}
@@ -78,7 +78,7 @@ const Sessions = () => {
                         size="sm"
                         id={`btn-remove-session-${index}`}
                         variant="outlined"
-                        className="hover:!text-red-600 hover:!border-red-600"
+                        className="hover:!text-red-600 hover:!border-red-600 dark:text-gray-100 dark:border-gray-200"
                         onClick={(e) => handleRemoveSession(session, index)}
                         placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         Remove
@@ -89,7 +89,7 @@ const Sessions = () => {
     );
 
     return (
-        <div className="w-full">
+        <div className="w-full mx-auto max-w-6xl">
             <div className="flex items-center justify-between">
                 <div>
                     <div className="font-semibold text-lg">Sessions</div>
@@ -112,17 +112,6 @@ const Sessions = () => {
                         />
                     ))
                 }
-                {/* <SessionItem
-                    browser="Samsung Browser - Android"
-                    location="Thailand, Changwat Phetchabun"
-                    os="Android"
-                />
-                <SessionItem
-                    browser="Edge - Windows"
-                    location="Thailand, Changwat Phetchabun"
-                    os="Windows"
-                    isCurrent
-                /> */}
             </div>
         </div>
     )

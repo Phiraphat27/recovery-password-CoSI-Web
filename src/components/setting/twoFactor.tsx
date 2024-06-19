@@ -114,7 +114,7 @@ const TwoFactor: React.FC = () => {
     }
 
     return (
-        <div className="w-full items-center">
+        <div className="w-full items-center mx-auto max-w-6xl">
             <div className="flex items-center justify-between">
                 <div>
                     <div className="font-semibold text-lg">Two-factor Authentication</div>
@@ -134,14 +134,14 @@ const TwoFactor: React.FC = () => {
             </div>
             <div className="flex flex-col gap-5 pt-6">
                 {listTwoFactor.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between pb-6 border-b-[2px] border-gray-200">
+                    <div key={index} className="flex flex-col md:flex-row items-start md:items-center gap-4 justify-between pb-6 border-b-[2px] border-gray-200">
                         <div>
                             <div className="font-semibold text-md">{item.title}</div>
                             <div className="font-medium text-sm text-gray-500 dark:text-gray-200">
                                 {item.description}
                             </div>
                         </div>
-                        <div className="flex gap-4 items-center">
+                        <div className="flex flex-col md:flex-row md:items-center gap-4">
                             <div id={`text-status-${item.unit}`} className="font-semibold text-sm text-gray-500 dark:text-gray-200">
                                 {item.status}
                             </div>
@@ -175,7 +175,7 @@ const TwoFactor: React.FC = () => {
                                                 alt="Authenticator"
                                                 width={80}
                                                 height={80}
-                                                className="rounded" />
+                                                className="rounded " />
                                         </Suspense>
                                     </>
                                 )

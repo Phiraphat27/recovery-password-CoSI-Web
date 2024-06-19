@@ -61,7 +61,7 @@ export default function TabsWithIcon() {
                     ))}
                 </TabsHeader>
                 <Suspense fallback={<Loading />}>
-                    <TabsBody className="dark:text-white" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <TabsBody className="dark:text-white max-w-2xl mx-auto lg:max-w-4xl xl:max-w-7xl" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {data.map(({ value, desc }) => (
                             <TabPanel className="dark:text-white" key={value} value={value}>
                                 {desc}
