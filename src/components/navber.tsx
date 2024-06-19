@@ -32,6 +32,8 @@ import { cookies } from "next/headers";
 import { sessionData } from "@/type/sessionData";
 import { useLocale } from "next-intl";
 import { useRouter } from "@/navigation";
+import { url } from "inspector";
+import Link from "next/link";
 
 // profile menu component
 const profileMenuItems = [
@@ -210,14 +212,17 @@ const navListItems = [
     {
         label: "Account",
         icon: UserCircleIcon,
+        url: "/office/account"
     },
     {
         label: "Blocks",
         icon: CubeTransparentIcon,
+        url: "/office/blocks"
     },
     {
         label: "Docs",
         icon: CodeBracketSquareIcon,
+        url: "/office/docs"
     },
 ];
 
@@ -225,11 +230,11 @@ function NavList() {
     return (
         <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
             <NavListMenu />
-            {navListItems.map(({ label, icon }, key) => (
+            {navListItems.map(({ label, icon, url }, key) => (
                 <Typography
                     key={label}
                     as="a"
-                    href="#"
+                    href={url}
                     variant="small"
                     color="gray"
                     className="font-medium text-blue-gray-500" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
