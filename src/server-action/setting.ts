@@ -132,7 +132,6 @@ export async function getTwoauth() {
 }
 
 export async function createAppAuth() {
-    console.log("Creating app auth");
     const sessionToken = cookies().get("session")?.value;
     if (!sessionToken) throw new Error("Session token not found");
 
@@ -189,13 +188,9 @@ export async function getAppAuth() {
         return createAppAuth();
     }
 
-    console.log(`Response: ${JSON.stringify(response)}`)
-
     if (!response?.auth_app || response?.auth_app == "") return createAppAuth();
 
     const secret = JSON.parse(response.secret_app ?? "{}");
-
-    console.log(`Secret: ${JSON.stringify(secret)}`)
 
     try {
         const dataUrl = await QRCode.toDataURL(secret.otpauth_url);
