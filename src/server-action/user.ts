@@ -37,6 +37,7 @@ export async function getUserById(id: string) {
 }
 
 export async function getUserList() {
+    const lang = cookies().get("NEXT_LOCALE")?.value as string;
     return await prisma.user.findMany({
         select: {
             user_id: true,
@@ -45,23 +46,38 @@ export async function getUserList() {
             user_email: true,
             user_join : true,
             profile: {
+                where: {
+                    language_code: lang
+                },
                 select: {
                     name: true
                 }
             },
             position:{
                 select:{
-                    position_name: true
+                    position_name: {
+                        where: {
+                            language_code: lang
+                        },
+                    }
                 }
             },
             permission:{
                 select:{
-                    permission_name: true
+                    permission_name: {
+                        where: {
+                            language_code: lang
+                        },
+                    }
                 }
             },
             department:{
                 select:{
-                    department_name: true
+                    department_name: {
+                        where: {
+                            language_code: lang
+                        },
+                    }
                 }
             },
         }
