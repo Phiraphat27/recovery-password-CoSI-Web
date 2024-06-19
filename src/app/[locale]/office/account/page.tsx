@@ -1,5 +1,5 @@
 "use client"
-import TabsWithIcon from "@/components/account-table";
+import TabsWithIcon from "@/components/account/table";
 import { getUserList } from "@/server-action/user";
 import { useEffect, useState } from "react";
 import { useLocale } from "next-intl";
