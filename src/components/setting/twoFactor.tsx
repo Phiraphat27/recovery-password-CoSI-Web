@@ -154,9 +154,9 @@ const TwoFactor: React.FC = () => {
                                             label={item.unit === "phone" ? "Phone Number" : "Email"}
                                             className="pr-20 w-[300px] dark:focus:border-gray-200 dark:focus:border-t-transparent "
                                             labelProps={{ className: "dark:text-gray-200 dark:peer-focus:text-white dark:peer-focus:before:!border-gray-200 dark:peer-focus:after:!border-gray-200" }}
-                                            containerProps={{ className: "min-w-0 dark:text-white" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} 
-                                            />
-                                        
+                                            containerProps={{ className: "min-w-0 dark:text-white" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}
+                                        />
+
                                         <Button
                                             size="sm"
                                             id={`edit-${item.unit}-button`}
@@ -164,7 +164,8 @@ const TwoFactor: React.FC = () => {
                                             onClick={(e) => handEdit(item.unit, e)}
                                             className="!absolute right-1 top-1 rounded dark:bg-white dark:text-black" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                                >
                                             Edit
-                                        </Button></>
+                                        </Button>
+                                    </>
                                 ) : (
                                     <>
                                         {/* image base64 */}
