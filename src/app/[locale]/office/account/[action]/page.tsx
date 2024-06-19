@@ -14,14 +14,14 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
             label: "English",
             value: "EN",
             desc: <>
-                <AccountInfo />
+                <AccountInfo lang="en" />
             </>,
         },
         {
             label: "Thai",
             value: "TH",
             desc: <>
-                <AccountInfo />
+                <AccountInfo lang="th" />
             </>,
         }
     ];

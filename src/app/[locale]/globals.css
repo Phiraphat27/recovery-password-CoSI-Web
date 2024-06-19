@@ -81,9 +81,9 @@ body {
 .editor {
   box-shadow: 0px 0px 20px 0px rgba(76, 87, 125, 0.02);
   /* background: #fff; */
-  padding: 20px 30px;
+  /* padding: 20px 30px;
   width: 60%;
-  margin: 50px auto;
+  margin: 50px auto; */
 }
 
 #editorjs-container {
@@ -135,6 +135,15 @@ body {
 .link-tool {
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #8a8a8a;
+  border-radius: 10px;
 }
 
 @layer utilities {
