@@ -125,6 +125,7 @@ model user {
   user_image                   String       @db.Text
   user_position                String?      @db.VarChar(8)
   user_permission              String?      @db.VarChar(8)
+  user_department              String?      @db.VarChar(8)
   user_profile                 String?      @db.VarChar(10)
   key_user_key_user_userTouser key_user[]   @relation("key_user_userTouser")
   log                          log[]
@@ -134,10 +135,12 @@ model user {
   two_factor                   two_factor?
   position                     position?    @relation(fields: [user_position], references: [position_id], onDelete: Cascade, map: "user_ibfk_1")
   permission                   permission?  @relation(fields: [user_permission], references: [permission_id], onDelete: Cascade, map: "user_ibfk_2")
+  department                   department?  @relation(fields: [user_department], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_ibfk_3")
 
   @@index([user_permission], map: "user_permission")
   @@index([user_profile], map: "user_profile")
   @@index([user_position], map: "user_type")
+  @@index([user_department], map: "user_department")
 }
 
 model session {
@@ -161,4 +164,20 @@ model two_factor {
   enable     Boolean
   secret_app String? @db.LongText
   user       user    @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "two_factor_ibfk_1")
+}
+
+model department {
+  id              String            @id @db.VarChar(8)
+  department_name department_name[]
+  user            user[]
+}
+
+model department_name {
+  name          String     @db.Text
+  language_code String     @db.VarChar(5)
+  department_id String     @db.VarChar(8)
+  department    department @relation(fields: [department_id], references: [id], onDelete: Cascade, map: "department_name_ibfk_1")
+
+  @@id([language_code, department_id])
+  @@index([department_id], map: "department_id")
 }
