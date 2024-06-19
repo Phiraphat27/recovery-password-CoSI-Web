@@ -152,7 +152,7 @@ const TwoFactor: React.FC = () => {
                                             type={item.unit === "phone" ? "tel" : "email"}
                                             id={`${item.unit}-input`}
                                             label={item.unit === "phone" ? "Phone Number" : "Email"}
-                                            className="pr-20"
+                                            className="pr-20 w-[300px]"
                                             containerProps={{ className: "min-w-0" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                                         <Button
                                             size="sm"
