@@ -116,11 +116,11 @@ model time_entry {
 
 model user {
   user_id                      String       @id @db.VarChar(14)
-  user_name                    String       @db.Text
   user_join                    DateTime     @default(now()) @db.Date
   user_terminated              DateTime?    @db.Date
   user_password                String       @db.Text
   user_email                   String       @db.Text
+  user_email_dispaly           String       @db.Text
   user_git                     String?      @db.Text
   user_image                   String       @db.Text
   user_position                String?      @db.VarChar(8)
