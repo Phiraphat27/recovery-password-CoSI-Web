@@ -8,10 +8,9 @@ export default function AccountInfo({ lang }: { lang: string }) {
     const [data, setData] = useState<OutputData>({} as OutputData)
 
     return (
-        <div className="w-[90%] xl:w-[70%] m-auto lg:h-[680px] flex items-center flex-col-reverse lg:flex-row lg:justify-between z-10 mb-8 mt-8">
-
+        <div className="w-[90%] xl:w-[80%] m-auto lg:h-[680px] flex items-center flex-col-reverse lg:flex-row lg:justify-between z-10 mb-8 mt-8">
             <div className="w-full lg:w-[90%] overflow-y-auto lg:h-[680px] duration-200 ease-in-out pb-2 pl-3 pr-5 mr-5 text-sm ">
-                <div className="mb-5 pt-2">
+                <div className="mb-5 pt-3">
                     {/* <h1 className="text-3xl font-medium pb-4">Asst. Prof. Worawat Choensawat (Ph.D.)</h1> */}
                     {/* <h1 className="text-lg font-medium pt-2 text-gray-600">On Member Since :  10 Jul 2020</h1>
                     <h1 className="text-md font-normal text-gray-600">Professor</h1> */}
@@ -148,6 +147,7 @@ export default function AccountInfo({ lang }: { lang: string }) {
                         </div>
                         <div className="w-full">
                             <div className="editor">
+                                <div className="text-lg font-medium text-gray-600 pb-2">Biography</div>
                                 <Editor data={data} onChange={setData} editorblock={`editorjs-container-${lang}`} />
                                 {/* <button
                                     className="savebtn bg-black rounded-lg text-white p-3 w-24 mt-4 cursor-pointer"

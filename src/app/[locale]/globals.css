@@ -96,9 +96,9 @@ body {
   @apply prose
 }
 
-.cdx-block {
+/* .cdx-block {
   padding: 0.2px !important;
-}
+} */
 
 .ce-toolbar__content,
 .ce-block__content {

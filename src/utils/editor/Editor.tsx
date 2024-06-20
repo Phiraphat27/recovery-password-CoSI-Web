@@ -16,19 +16,19 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
     const INITIAL_DATA: OutputData = {
         time: new Date().getTime(),
         blocks: [
-            {
-                type: 'header',
-                data: {
-                    text: 'This is my awesome editor!',
-                    level: 1,
-                },
-            },
-            {
-                type: 'paragraph',
-                data: {
-                    text: 'Start writing your content here...',
-                },
-            },
+            // {
+            //     type: 'header',
+            //     data: {
+            //         text: 'This is my awesome editor!',
+            //         level: 1,
+            //     },
+            // },
+            // {
+            //     type: 'paragraph',
+            //     data: {
+            //         text: 'Start writing your content here...',
+            //     },
+            // },
         ],
     }
 
@@ -68,7 +68,7 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
         };
     }, [data, editorblock, onChange]);
 
-    return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:bg-black" />;
+    return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:bg-black pt-3" />;
 };
 
 export default memo(Editor);
