@@ -2,13 +2,92 @@
 import { OutputData } from "@editorjs/editorjs";
 import { Select, Option, Input, Button, Typography } from "@material-tailwind/react";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
+import ImageUpload from "@/components/ImageUpload";
+import { OptionAccount } from "@/type/option";
 const Editor = dynamic(() => import('@/utils/editor/editor'), { ssr: false })
-export default function AccountInfo({ lang }: { lang: string }) {
-    const [data, setData] = useState<OutputData>({} as OutputData)
+export default function AccountInfo(
+    {
+        lang,
+        action,
+        dataForm,
+        option,
+        setDataForm
+    }:
+        {
+            lang: string,
+            action: string,
+            option: OptionAccount,
+            dataForm: any,
+            setDataForm: Dispatch<any>
+        }
+) {
+    const [biography, setBiography] = useState<OutputData>({} as OutputData)
+    const [uploadedImage, setUploadedImage] = useState<{ file: File | null, src: string | null }>({ file: null, src: null });
+
+    const handleImageUpload = (imageFile: File | null, imageSrc: string | null) => {
+        setUploadedImage({ file: imageFile, src: imageSrc });
+    };
+
+    useEffect(() => {
+        console.log(dataForm);
+    }, [dataForm])
+
+
+    useEffect(() => {
+        setDataForm((prev: any) => {
+            return {
+                ...prev,
+                image: uploadedImage.src
+            }
+        })
+    }, [uploadedImage])
+
+    useEffect(() => {
+        setDataForm((prev: any) => {
+            return {
+                ...prev,
+                [lang]: {
+                    ...prev[lang],
+                    biography: biography
+                }
+            }
+        })
+    }, [biography])
+
+    const handOnChangeLang = (e: any, name?: string, value?: any) => {
+        const key = name ? name : e.target.name
+        const val = value ? value : e.target.value
+        setDataForm((prev: any) => {
+            // if type if input
+            return {
+                ...prev,
+                [lang]: {
+                    ...prev[lang],
+                    [key]: val
+                }
+            }
+        })
+    }
+
+    const handOnChange = (e: any, name?: string, value?: any) => {
+        const key = name ? name : e.target.name
+        const val = value ? value : e.target.value
+        setDataForm((prev: any) => {
+            return {
+                ...prev,
+                [key as string]: val
+            }
+        }
+        )
+    }
+
+    useEffect(() => {
+        console.log(`dataForm`, dataForm);
+    }, [dataForm]);
 
     return (
-        <div className="w-[90%] xl:w-[80%] m-auto lg:h-[680px] flex items-center flex-col-reverse lg:flex-row lg:justify-between z-10 mb-8 mt-8">
+        <div className="w-[90%] xl:w-[80%] m-auto lg:h-[680px] flex items-center flex-col-reverse lg:flex-row lg:justify-between z-10 mb-0 mt-8">
             <div className="w-full lg:w-[90%] overflow-y-auto lg:h-[680px] duration-200 ease-in-out pb-2 pl-3 pr-5 mr-5 text-sm ">
                 <div className="mb-5 pt-3">
                     {/* <h1 className="text-3xl font-medium pb-4">Asst. Prof. Worawat Choensawat (Ph.D.)</h1> */}
@@ -24,39 +103,61 @@ export default function AccountInfo({ lang }: { lang: string }) {
                             type="name"
                             autoComplete="name"
                             required
+                            value={dataForm[lang].name}
                             autoFocus
-                            // onChange={(e) => setValues({ ...values, email: e.target.value })}
+                            onChange={handOnChangeLang}
                             onFocus={(e) => e.target.placeholder = "Your Name"}
-                            onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                        />
+                            onBlur={(e) => {
+                                e.target.placeholder = ""
+                                const name = e.target.value.split(" ")
+                                if (lang == "en" && name && name.length > 1) {
+                                    document.getElementById("email")?.setAttribute("value", `${name[0]?.toLowerCase()}.${name[1]?.toLowerCase()?.slice(0, 4)}`)
+                                    setDataForm({
+                                        ...dataForm,
+                                        email: `${name[0]?.toLowerCase()}.${name[1]?.toLowerCase()?.slice(0, 4)}`
+                                    })
+                                }
+                            }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                     </div>
                     <div className="my-4 flex flex-col lg:flex-row items-center gap-4 w-full">
                         <div className="w-full">
                             <Select
+                                name="position"
                                 label="Position"
+                                value={dataForm.position}
+                                onChange={(value) => handOnChange(undefined, "position", value)}
                                 animate={{
                                     mount: { y: 0 },
                                     unmount: { y: 25 },
-                                }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
+                                }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                {
+                                    option ? option?.position.map((item, index) => {
+                                        return (
+                                            <Option value={item.value}>{item.label[lang].name}</Option>
+                                        )
+                                    })
+                                        : <Option value="1" disabled>Admin</Option>
+                                }
                             </Select>
                         </div>
                         <div className="w-full">
                             <Select
                                 label="Department"
+                                name="department"
                                 itemProp="required"
+                                onChange={(value) => handOnChange(undefined, "department", value)}
                                 animate={{
                                     mount: { y: 0 },
                                     unmount: { y: 25 },
                                 }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
+                                {
+                                    option ? option?.department.map((item, index) => {
+                                        return (
+                                            <Option key={index} value={item.value}>{item.label[lang].name}</Option>
+                                        )
+                                    })
+                                        : <Option value="1" disabled>Admin</Option>
+                                }
                             </Select>
                         </div>
                     </div>
@@ -64,15 +165,20 @@ export default function AccountInfo({ lang }: { lang: string }) {
                         <div className="w-full">
                             <Select
                                 label="Permission"
+                                onChange={(value) => handOnChange(undefined, "permission", value)}
+                                name="permission"
                                 animate={{
                                     mount: { y: 0 },
                                     unmount: { y: 25 },
                                 }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
-                                <Option>Material Tailwind HTML</Option>
-                                <Option>Material Tailwind React</Option>
-                                <Option>Material Tailwind Vue</Option>
-                                <Option>Material Tailwind Angular</Option>
-                                <Option>Material Tailwind Svelte</Option>
+                                {
+                                    option ? option?.permission.map((item, index) => {
+                                        return (
+                                            <Option key={index} value={item.value}>{item.label[lang].name}</Option>
+                                        )
+                                    })
+                                        : <Option value="1" disabled>Admin</Option>
+                                }
                             </Select>
                         </div>
                         <div className="w-full">
@@ -84,9 +190,10 @@ export default function AccountInfo({ lang }: { lang: string }) {
                                     name="github"
                                     type="github"
                                     label="Github ID"
-                                    // onChange={(e) => setValues({ ...values, email: e.target.value })}
+                                    value={dataForm[lang].github}
+                                    onChange={handOnChange}
                                     onFocus={(e) => e.target.placeholder = "Your ID"}
-                                    onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                                />
+                                    onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                             </div>
                         </div>
                     </div>
@@ -96,13 +203,14 @@ export default function AccountInfo({ lang }: { lang: string }) {
                                 className="w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
                                 placeholder=""
                                 id="email-display"
-                                name="email-display"
+                                name="emailDisplay"
                                 label="Email Display"
+                                value={dataForm[lang].emailDisplay}
                                 type="email"
                                 required
-                                // onChange={(e) => setValues({ ...values, email: e.target.value })}
+                                onChange={handOnChange}
                                 onFocus={(e) => e.target.placeholder = "Your email display"}
-                                onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}                            />
+                                onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                         </div>
                     </div>
                     <div className="my-4 flex flex-col items-center gap-4 w-full">
@@ -114,8 +222,10 @@ export default function AccountInfo({ lang }: { lang: string }) {
                                     type="email"
                                     label="Email System"
                                     autoComplete="email"
+                                    value={dataForm[lang].email}
+                                    onChange={handOnChange}
                                     required
-                                    className="pr-20 w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
+                                    className="pointer-events-none pr-20 w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
                                     labelProps={{ className: "dark:text-gray-200 dark:peer-focus:text-white dark:peer-focus:before:!border-gray-200 dark:peer-focus:after:!border-gray-200" }}
                                     containerProps={{ className: "min-w-0 dark:text-white" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}
                                 />
@@ -130,7 +240,7 @@ export default function AccountInfo({ lang }: { lang: string }) {
                                 </Typography>
                             </div>
                         </div>
-                        <div className="w-full">
+                        <div className={`w-full ${action !== "edit" ? "hidden" : ""}`}>
                             <div className="relative w-full min-w-[200px] h-10">
                                 <Input
                                     className="w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
@@ -139,16 +249,18 @@ export default function AccountInfo({ lang }: { lang: string }) {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    value={dataForm[lang].password}
                                     autoComplete="password"
-                                    // onChange={(e) => setValues({ ...values, email: e.target.value })}
+                                    disabled={action !== "edit" ? true : false}
+                                    onChange={handOnChange}
                                     onFocus={(e) => e.target.placeholder = "********"}
-                                    onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}/>
+                                    onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                             </div>
                         </div>
                         <div className="w-full">
                             <div className="editor">
                                 <div className="text-lg font-medium text-gray-600 pb-2">Biography</div>
-                                <Editor data={data} onChange={setData} editorblock={`editorjs-container-${lang}`} />
+                                <Editor data={biography} onChange={setBiography} editorblock={`editorjs-container-${lang}`} />
                                 {/* <button
                                     className="savebtn bg-black rounded-lg text-white p-3 w-24 mt-4 cursor-pointer"
                                     onClick={() => {
@@ -162,9 +274,10 @@ export default function AccountInfo({ lang }: { lang: string }) {
                     </div>
                 </div>
             </div>
-            <div className="w-[220px] h-[340px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[480px] lg:h-[680px] my-10 lg:my-0">
+            <ImageUpload onImageUpload={handleImageUpload} image={dataForm.image}/>
+            {/* <div className="w-[220px] h-[340px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[480px] lg:h-[680px] my-10 lg:my-0">
                 <img className="pointer-events-none object-cover object-center w-full h-full rounded-[10px]" src="https://cosi.bu.ac.th/collections/members/C7ZSsXMF9NZO08b.jpg" alt="profile" />
-            </div>
+            </div> */}
         </div>
     )
 }

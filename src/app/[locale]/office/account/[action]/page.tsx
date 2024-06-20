@@ -1,5 +1,7 @@
 "use client";
 import AccountInfo from "@/components/account/info";
+import { getOption } from "@/server-action/option";
+import { OptionAccount } from "@/type/option";
 import {
     Tabs,
     TabsHeader,
@@ -7,21 +9,73 @@ import {
     Tab,
     TabPanel,
 } from "@material-tailwind/react";
+import { useEffect, useState } from "react";
 
 export default function TabsCustomAnimation({ params }: { params: { action: string } }) {
+    const [dataForm, setDataForm] = useState<{
+        position: string;
+        department: string;
+        permission: string;
+        github: string;
+        emailDisplay: string;
+        email: string;
+        password: string;
+        image: string;
+        th: {
+            [key: string]: string | object;
+            name: string;
+            biography: object;
+        };
+        en: {
+            [key: string]: string | object;
+            name: string;
+            biography: object;
+        };
+        [key: string]: {
+            [key: string]: string | object;
+        } | string | object;
+    }>({
+        emailDisplay: "",
+        position: "",
+        department: "",
+        permission: "",
+        github: "",
+        email: "",
+        password: "",
+        image: "",
+        th: {
+            name: "",
+            biography: {}
+        },
+        en: {
+            name: "",
+            biography: {}
+        }
+    });
+
+    const [option, setOption] = useState<OptionAccount>();
+
+    useEffect(() => {
+        async function fetchData() {
+            const res = await getOption();
+            setOption(res);
+        }
+        fetchData();
+    }, []);
+
     const data = [
         {
             label: "English",
             value: "EN",
             desc: <>
-                <AccountInfo lang="en" />
+                <AccountInfo action={params.action} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="en" />
             </>,
         },
         {
             label: "Thai",
             value: "TH",
             desc: <>
-                <AccountInfo lang="th" />
+                <AccountInfo action={params.action} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="th" />
             </>,
         }
     ];
@@ -55,6 +109,10 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
                         </TabPanel>
                     ))}
                 </TabsBody>
+                <div className="w-[90%] xl:w-[80%] m-auto pl-6 flex items-center lg:flex-row z-10">
+                    <button className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+                    <button className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
+                </div>
             </Tabs>
         </div>
     );
