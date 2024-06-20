@@ -1,6 +1,9 @@
 "use client";
 import AccountInfo from "@/components/account/info";
+import { useRouter } from "@/navigation";
 import { getOption } from "@/server-action/option";
+import { createUser } from "@/server-action/user";
+import { memberProfile } from "@/type/member";
 import { OptionAccount } from "@/type/option";
 import {
     Tabs,
@@ -12,29 +15,7 @@ import {
 import { useEffect, useState } from "react";
 
 export default function TabsCustomAnimation({ params }: { params: { action: string } }) {
-    const [dataForm, setDataForm] = useState<{
-        position: string;
-        department: string;
-        permission: string;
-        github: string;
-        emailDisplay: string;
-        email: string;
-        password: string;
-        image: string;
-        th: {
-            [key: string]: string | object;
-            name: string;
-            biography: object;
-        };
-        en: {
-            [key: string]: string | object;
-            name: string;
-            biography: object;
-        };
-        [key: string]: {
-            [key: string]: string | object;
-        } | string | object;
-    }>({
+    const [dataForm, setDataForm] = useState<memberProfile>({
         emailDisplay: "",
         position: "",
         department: "",
@@ -52,6 +33,8 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
             biography: {}
         }
     });
+
+    const router = useRouter();
 
     const [option, setOption] = useState<OptionAccount>();
 
@@ -79,6 +62,12 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
             </>,
         }
     ];
+
+    const handleSave = async () => {
+        await createUser(dataForm).then((res) => {
+            router.push("/office/account");
+        });
+    }
 
     return (
         <div className="max-w-7xl mx-auto">
@@ -110,7 +99,7 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
                     ))}
                 </TabsBody>
                 <div className="w-[90%] xl:w-[80%] m-auto pl-6 flex items-center lg:flex-row z-10">
-                    <button className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+                    <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
                     <button className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
                 </div>
             </Tabs>

@@ -29,9 +29,9 @@ export default function AccountInfo(
         setUploadedImage({ file: imageFile, src: imageSrc });
     };
 
-    useEffect(() => {
-        console.log(dataForm);
-    }, [dataForm])
+    // useEffect(() => {
+    //     console.log(dataForm);
+    // }, [dataForm])
 
 
     useEffect(() => {
