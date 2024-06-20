@@ -6,28 +6,27 @@ import { cookies, headers } from 'next/headers';
 import { sessionData } from '@/type/sessionData';
 import { userAgent } from 'next/server';
 
-export async function registerUser(
-    email: string,
-    password: string,
-    name: string,
-    permission: string,
-    position: string,
-) {
-    const hashedPassword = await encrypt(password);
-    return await prisma.user.create({
-        data: {
-            user_email: email,
-            user_password: hashedPassword,
-            user_name: name,
-            user_join: new Date(),
-            user_id: await isIdUniqueUser(),
-            user_image: '',
-            user_profile: '',
-            user_permission: permission,
-            user_position: position,
-        },
-    });
-}
+// export async function registerUser(
+//     email: string,
+//     password: string,
+//     name: string,
+//     permission: string,
+//     position: string,
+// ) {
+//     const hashedPassword = await encrypt(password);
+//     return await prisma.user.create({
+//         data: {
+//             user_email: email,
+//             user_password: hashedPassword,
+//             user_join: new Date(),
+//             user_id: await isIdUniqueUser(14),
+//             user_image: '',
+//             user_profile: '',
+//             user_permission: permission,
+//             user_position: position,
+//         },
+//     });
+// }
 
 export async function forgotPassword(email: string ,password: string) {
     const user = await prisma.user.findFirst({ where: { user_email: email } });
@@ -79,7 +78,6 @@ async function authenticateUser(email: string, password: string) {
                 user_id: true,
                 user_email: true,
                 user_password: true,
-                user_name: true,
                 user_image: true,
                 permission: {
                     select: { permission_name: true }

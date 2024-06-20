@@ -11,8 +11,8 @@ export const generator_id = (length: number) => {
 }
 
 // check if id is unique
-export const isIdUniqueUser = async () => {
-    const id = generator_id(14);
+export const isIdUniqueUser = async (length: number) => {
+    const id = generator_id(length);
     while (true) {
         const user = await prisma.user.findFirst({ where: { user_id: id } });
         if (!user) {
