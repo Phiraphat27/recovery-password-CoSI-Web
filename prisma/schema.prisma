@@ -135,7 +135,7 @@ model user {
   two_factor                   two_factor?
   position                     position?    @relation(fields: [user_position], references: [position_id], onDelete: Cascade, map: "user_ibfk_1")
   permission                   permission?  @relation(fields: [user_permission], references: [permission_id], onDelete: Cascade, map: "user_ibfk_2")
-  department                   department?  @relation(fields: [user_department], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "user_ibfk_3")
+  department                   department?  @relation(fields: [user_department], references: [department_id], onDelete: Restrict, onUpdate: Restrict, map: "user_ibfk_3")
 
   @@index([user_permission], map: "user_permission")
   @@index([user_profile], map: "user_profile")
@@ -167,7 +167,7 @@ model two_factor {
 }
 
 model department {
-  id              String            @id @db.VarChar(8)
+  department_id   String            @id @db.VarChar(8)
   department_name department_name[]
   user            user[]
 }
@@ -176,7 +176,7 @@ model department_name {
   name          String     @db.Text
   language_code String     @db.VarChar(5)
   department_id String     @db.VarChar(8)
-  department    department @relation(fields: [department_id], references: [id], onDelete: Cascade, map: "department_name_ibfk_1")
+  department    department @relation(fields: [department_id], references: [department_id], onDelete: Cascade, map: "department_name_ibfk_1")
 
   @@id([language_code, department_id])
   @@index([department_id], map: "department_id")
