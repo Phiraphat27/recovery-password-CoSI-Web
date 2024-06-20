@@ -20,7 +20,6 @@ export default function AccountList() {
         async function callData() {
             try {
                 const data = await getUserList();
-                console.log(data);
 
                 if (!Array.isArray(data)) {
                     throw new Error("Data is not an array");
