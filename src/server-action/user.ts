@@ -7,6 +7,11 @@ import { decryptJWT, encrypt } from '@/lib/secret';
 import { memberProfile } from '@/type/member';
 
 export async function createUser(data: memberProfile) {
+    const session = cookies().get("session")?.value as string;
+    const token = await decryptJWT(session)
+    if (token === null) {
+        return
+    }
     const { user_password, ...rest } = data
     const isUnique = await isIdUniqueUser(14)
     const password = await encrypt(user_password as string)
@@ -47,35 +52,60 @@ export async function createUser(data: memberProfile) {
     }
 }
 
-export async function getUserById(id: string) {
+export async function getUserById(id?: string) {
+    const session = cookies().get("session")?.value as string;
+    const token = await decryptJWT(session)
+    if (token === null) {
+        return
+    }
+    id = !id ? token.user.user_id : decodeURIComponent(id)
+    console.log(`id: ${id}`)
     return await prisma.user.findUnique({
         where: {
             user_id: id
         },
         include: {
             profile: true,
-            position:{
-                select:{
+            position: {
+                select: {
                     position_name: true
                 }
             },
-            permission:{
-                select:{
+            permission: {
+                select: {
                     permission_name: true
                 }
             },
-            department:{
-                select:{
+            department: {
+                select: {
                     department_name: true
                 }
             },
         }
     }).then((user) => {
-        const { user_password , ...rest } = user as any
-        return rest
-    }).catch((err) => {
-        return err
-    })
+        const { user_password, ...rest } = user as any
+        const result = {
+            emailDisplay: rest.user_email_dispaly,
+            position: rest.user_position,
+            department: rest.user_department,
+            permission: rest.user_permission,
+            github: rest.user_git,
+            email: rest.user_email,
+            password: "",
+            image: rest.user_image,
+            th: {
+                name: rest.profile.find((item: any) => item.language_code === "th").name,
+                biography:rest.profile.find((item: any) => item.language_code === "th").details
+            },
+            en: {
+                name: rest.profile.find((item: any) => item.language_code === "en").name,
+                biography: rest.profile.find((item: any) => item.language_code === "en").details
+            }
+        }
+        return result
+        }).catch((err) => {
+            return err
+        })
 }
 
 export async function getUserList() {
@@ -85,7 +115,7 @@ export async function getUserList() {
             user_id: true,
             user_image: true,
             user_email: true,
-            user_join : true,
+            user_join: true,
             profile: {
                 where: {
                     language_code: lang
@@ -94,8 +124,8 @@ export async function getUserList() {
                     name: true
                 }
             },
-            position:{
-                select:{
+            position: {
+                select: {
                     position_name: {
                         where: {
                             language_code: lang
@@ -103,8 +133,8 @@ export async function getUserList() {
                     }
                 }
             },
-            permission:{
-                select:{
+            permission: {
+                select: {
                     permission_name: {
                         where: {
                             language_code: lang
@@ -112,8 +142,8 @@ export async function getUserList() {
                     }
                 }
             },
-            department:{
-                select:{
+            department: {
+                select: {
                     department_name: {
                         where: {
                             language_code: lang
@@ -124,7 +154,7 @@ export async function getUserList() {
         }
     }).then((users) => {
         const newdata = users.map((item) => {
-            const { user_password , ...rest } = item as any
+            const { user_password, ...rest } = item as any
             return rest
         })
         return newdata

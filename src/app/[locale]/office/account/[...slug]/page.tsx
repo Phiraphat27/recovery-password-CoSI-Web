@@ -1,8 +1,8 @@
 "use client";
-import AccountInfo from "@/components/account/info";
+import AccountInfo from "@/components/account/form";
 import { useRouter } from "@/navigation";
 import { getOption } from "@/server-action/option";
-import { createUser } from "@/server-action/user";
+import { createUser, getUserById } from "@/server-action/user";
 import { memberProfile } from "@/type/member";
 import { OptionAccount } from "@/type/option";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
-export default function TabsCustomAnimation({ params }: { params: { action: string } }) {
+export default function TabsCustomAnimation({ params } : { params: { slug: any;} }) {
     const [dataForm, setDataForm] = useState<memberProfile>({
         emailDisplay: "",
         position: "",
@@ -35,6 +35,7 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
     });
 
     const router = useRouter();
+    // get params from url
 
     const [option, setOption] = useState<OptionAccount>();
 
@@ -42,8 +43,14 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
         async function fetchData() {
             const res = await getOption();
             setOption(res);
+
+            if (params.slug[0] === "edit") {
+                const datauser = await getUserById(params.slug[1] ? params.slug[1] : null);
+                setDataForm(datauser as memberProfile);
+            }
         }
         fetchData();
+        console.log(`path: ${params.slug}`)
     }, []);
 
     const data = [
@@ -51,14 +58,14 @@ export default function TabsCustomAnimation({ params }: { params: { action: stri
             label: "English",
             value: "EN",
             desc: <>
-                <AccountInfo action={params.action} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="en" />
+                <AccountInfo action={params.slug[0]} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="en" />
             </>,
         },
         {
             label: "Thai",
             value: "TH",
             desc: <>
-                <AccountInfo action={params.action} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="th" />
+                <AccountInfo action={params.slug[0]} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="th" />
             </>,
         }
     ];

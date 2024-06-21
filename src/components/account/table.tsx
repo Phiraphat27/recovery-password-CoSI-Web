@@ -20,7 +20,7 @@ import {
     Tooltip,
 } from "@material-tailwind/react";
 
-import { useRouter } from "@/navigation";
+import { Link, useRouter } from "@/navigation";
 import { useLocale } from "next-intl";
 
 interface TableRow {
@@ -240,9 +240,11 @@ const SortableTable: React.FC<SortableTableProps> = (
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
+                                                <Link href={`/office/account/edit/${row.id}`}>
                                                 <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                     <PencilIcon className="h-4 w-4" />
                                                 </IconButton>
+                                                </Link>
                                             </Tooltip>
                                         </td>
                                     </tr>

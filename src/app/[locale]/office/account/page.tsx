@@ -34,6 +34,7 @@ export default function AccountList() {
                         org: item.department && item.department.department_name && item.department.department_name[0] ? item.department.department_name[0].name : "No Department",
                         online: true,
                         date: new Date(item.user_join).getTime(),
+                        id: item.user_id,
                     };
                 });
 
