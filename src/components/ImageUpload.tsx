@@ -50,7 +50,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, image }) => {
                     <img className="pointer-events-none object-cover object-center w-full h-full rounded-[10px]" src={imageSrc} alt="profile" />
                 ) : (
                     <div className='flex flex-col'>
-                        <p>Drag 'n' drop an image here, or click to select one</p>
+                        <p>Drag & drop an image here, or click to select one</p>
                         <div className="leading-4 flex flex-col items-center">
                             <h1 className="mt-1 text-sm">size recommended 438x680px</h1>
                             <h1 className="mt-[-1px] text-xs">(jpg,png,webp only and Maximum size 2 MB)</h1>

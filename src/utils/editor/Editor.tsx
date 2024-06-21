@@ -36,6 +36,7 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
 
     useEffect(() => {
         if (!ref.current) {
+            console.log('date blocks', data);
             const editor = new EditorJS({
                 holder: editorblock,
                 autofocus: true,
@@ -46,7 +47,7 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
                     'variantTune',
                     'alignmentTune'
                 ],
-                data: INITIAL_DATA,
+                data: data,
                 onReady: () => {
                     new DragDrop(editor);
                     new Undo({ editor });
@@ -67,6 +68,14 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
             // }
         };
     }, [data, editorblock, onChange]);
+
+    useEffect(() => {
+        if (ref.current) {
+            ref.current.isReady.then(() => {
+                ref.current?.render(data);
+            });
+        }
+    }, [data]);
 
     return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:bg-black pt-3" />;
 };
