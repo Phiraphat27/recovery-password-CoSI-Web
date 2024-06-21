@@ -29,10 +29,6 @@ export default function AccountInfo(
         setUploadedImage({ file: imageFile, src: imageSrc });
     };
 
-    // useEffect(() => {
-    //     console.log(dataForm);
-    // }, [dataForm])
-
 
     useEffect(() => {
         setDataForm((prev: any) => {
@@ -82,9 +78,9 @@ export default function AccountInfo(
         )
     }
 
-    useEffect(() => {
-        console.log(`dataForm`, dataForm);
-    }, [dataForm]);
+    // useEffect(() => {
+    //     console.log(`dataForm`, dataForm);
+    // }, [dataForm]);
 
     return (
         <div className="w-[90%] xl:w-[80%] m-auto lg:h-[680px] flex items-center flex-col-reverse lg:flex-row lg:justify-between z-10 mb-0 mt-8">
@@ -121,65 +117,63 @@ export default function AccountInfo(
                     </div>
                     <div className="my-4 flex flex-col lg:flex-row items-center gap-4 w-full">
                         <div className="w-full">
-                            <Select
-                                name="position"
-                                label="Position"
-                                value={dataForm.position}
-                                onChange={(value) => handOnChange(undefined, "position", value)}
-                                animate={{
-                                    mount: { y: 0 },
-                                    unmount: { y: 25 },
-                                }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                {
-                                    option ? option?.position.map((item, index) => {
-                                        return (
-                                            <Option value={item.value}>{item.label[lang].name}</Option>
-                                        )
-                                    })
-                                        : <Option value="1" disabled>Admin</Option>
-                                }
-                            </Select>
+                            {option && option.position && (
+                                <Select
+                                    name="position"
+                                    label="Position"
+                                    value={dataForm.position}
+                                    onChange={(value) => handOnChange(undefined, "position", value)}
+                                    animate={{
+                                        mount: { y: 0 },
+                                        unmount: { y: 25 },
+                                    }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                    {option.position.map((item, index) => (
+                                        <Option key={index} value={item.value}>
+                                            {item.label && item.label[lang] && item.label[lang].name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            )}
                         </div>
                         <div className="w-full">
-                            <Select
-                                label="Department"
-                                name="department"
-                                itemProp="required"
-                                onChange={(value) => handOnChange(undefined, "department", value)}
-                                animate={{
-                                    mount: { y: 0 },
-                                    unmount: { y: 25 },
-                                }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
-                                {
-                                    option ? option?.department.map((item, index) => {
-                                        return (
-                                            <Option key={index} value={item.value}>{item.label[lang].name}</Option>
-                                        )
-                                    })
-                                        : <Option value="1" disabled>Admin</Option>
-                                }
-                            </Select>
+                            {option && option.department && (
+                                <Select
+                                    name="department"
+                                    label="Department"
+                                    value={dataForm.department}
+                                    onChange={(value) => handOnChange(undefined, "department", value)}
+                                    animate={{
+                                        mount: { y: 0 },
+                                        unmount: { y: 25 },
+                                    }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                    {option.department.map((item, index) => (
+                                        <Option key={index} value={item.value}>
+                                            {item.label && item.label[lang] && item.label[lang].name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            )}
                         </div>
                     </div>
                     <div className="my-4 flex flex-col lg:flex-row items-center gap-4 w-full">
                         <div className="w-full">
-                            <Select
-                                label="Permission"
-                                onChange={(value) => handOnChange(undefined, "permission", value)}
-                                name="permission"
-                                animate={{
-                                    mount: { y: 0 },
-                                    unmount: { y: 25 },
-                                }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                        >
-                                {
-                                    option ? option?.permission.map((item, index) => {
-                                        return (
-                                            <Option key={index} value={item.value}>{item.label[lang].name}</Option>
-                                        )
-                                    })
-                                        : <Option value="1" disabled>Admin</Option>
-                                }
-                            </Select>
+                        {option && option.department && (
+                                <Select
+                                    name="permission"
+                                    label="Permission"
+                                    value={dataForm.permission}
+                                    onChange={(value) => handOnChange(undefined, "permission", value)}
+                                    animate={{
+                                        mount: { y: 0 },
+                                        unmount: { y: 25 },
+                                    }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                    {option.permission.map((item, index) => (
+                                        <Option key={index} value={item.value}>
+                                            {item.label && item.label[lang] && item.label[lang].name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            )}
                         </div>
                         <div className="w-full">
                             <div className="relative w-full h-10">
@@ -190,7 +184,7 @@ export default function AccountInfo(
                                     name="github"
                                     type="github"
                                     label="Github ID"
-                                    value={dataForm[lang].github}
+                                    value={dataForm.github}
                                     onChange={handOnChange}
                                     onFocus={(e) => e.target.placeholder = "Your ID"}
                                     onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
@@ -205,7 +199,7 @@ export default function AccountInfo(
                                 id="email-display"
                                 name="emailDisplay"
                                 label="Email Display"
-                                value={dataForm[lang].emailDisplay}
+                                value={dataForm.emailDisplay}
                                 type="email"
                                 required
                                 onChange={handOnChange}
@@ -222,7 +216,7 @@ export default function AccountInfo(
                                     type="email"
                                     label="Email System"
                                     autoComplete="email"
-                                    value={dataForm[lang].email}
+                                    value={dataForm.email}
                                     onChange={handOnChange}
                                     required
                                     className="pointer-events-none pr-20 w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
@@ -249,7 +243,7 @@ export default function AccountInfo(
                                     id="password"
                                     name="password"
                                     type="password"
-                                    value={dataForm[lang].password}
+                                    value={dataForm.password}
                                     autoComplete="password"
                                     disabled={action !== "edit" ? true : false}
                                     onChange={handOnChange}
@@ -274,7 +268,7 @@ export default function AccountInfo(
                     </div>
                 </div>
             </div>
-            <ImageUpload onImageUpload={handleImageUpload} image={dataForm.image}/>
+            <ImageUpload onImageUpload={handleImageUpload} image={dataForm.image} />
             {/* <div className="w-[220px] h-[340px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[480px] lg:h-[680px] my-10 lg:my-0">
                 <img className="pointer-events-none object-cover object-center w-full h-full rounded-[10px]" src="https://cosi.bu.ac.th/collections/members/C7ZSsXMF9NZO08b.jpg" alt="profile" />
             </div> */}
