@@ -126,7 +126,6 @@ model user {
   user_position                String?      @db.VarChar(8)
   user_permission              String?      @db.VarChar(8)
   user_department              String?      @db.VarChar(8)
-  user_profile                 String?      @db.VarChar(10)
   key_user_key_user_userTouser key_user[]   @relation("key_user_userTouser")
   log                          log[]
   profile                      profile[]
@@ -138,7 +137,6 @@ model user {
   department                   department?  @relation(fields: [user_department], references: [department_id], onDelete: Restrict, onUpdate: Restrict, map: "user_ibfk_3")
 
   @@index([user_permission], map: "user_permission")
-  @@index([user_profile], map: "user_profile")
   @@index([user_position], map: "user_type")
   @@index([user_department], map: "user_department")
 }
