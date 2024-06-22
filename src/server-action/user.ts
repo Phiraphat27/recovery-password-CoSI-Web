@@ -1,7 +1,7 @@
 "use server"
 
 import prisma from '@/lib/prisma';
-import { generator_id, isIdUniqueUser } from '@/lib/dbid';
+import { generator_str, isIdUniqueUser } from '@/lib/dbid';
 import { cookies } from 'next/headers';
 import { decryptJWT, encrypt } from '@/lib/secret';
 import { memberProfile } from '@/type/member';
@@ -63,7 +63,7 @@ export async function createAndUpdateUser(data: memberProfile) {
                     },
                     data: {
                         name: rest.en.name as string,
-                        details: JSON.stringify(rest.en.biography) as string
+                        details: typeof rest.en.biography === "string" ? rest.en.biography : JSON.stringify(rest.en.biography) as string
                     }
                 },
                 {
@@ -75,7 +75,7 @@ export async function createAndUpdateUser(data: memberProfile) {
                     },
                     data: {
                         name: rest.th.name as string,
-                        details: JSON.stringify(rest.th.biography) as string
+                        details: typeof rest.th.biography === "string" ? rest.th.biography : JSON.stringify(rest.th.biography) as string
                     }
                 }
             ]

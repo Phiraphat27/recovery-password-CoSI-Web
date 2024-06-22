@@ -1,7 +1,7 @@
 "use server"
 
 import prisma from '@/lib/prisma';
-import { generator_id, isIdUniqueUser } from '@/lib/dbid';
+import { generator_str, isIdUniqueUser } from '@/lib/dbid';
 import { cookies } from 'next/headers';
 import { listSessionData } from '@/type/sessionData';
 import { decryptJWT } from '@/lib/secret';

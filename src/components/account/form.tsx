@@ -83,7 +83,7 @@ export default function AccountInfo(
     useEffect(() => {
         if (dataForm[lang].biography !== undefined && dataForm[lang].biography !== null && dataForm[lang].biography !== "" && typeof dataForm[lang].biography === "string") {
             try {
-            setDefaultBiography(JSON.parse(dataForm[lang].biography));
+                setDefaultBiography(JSON.parse(dataForm[lang].biography));
             } catch (error) {
                 // console.log("error", error)
             }

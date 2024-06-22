@@ -14,9 +14,9 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 
-export default function TabsCustomAnimation({ params } : { params: { slug: any;} }) {
+export default function TabsCustomAnimation({ params }: { params: { slug: any; } }) {
     const [dataForm, setDataForm] = useState<memberProfile>({
-        userId : "",
+        userId: "",
         emailDisplay: "",
         position: "",
         department: "",
@@ -109,7 +109,9 @@ export default function TabsCustomAnimation({ params } : { params: { slug: any;}
                 </TabsBody>
                 <div className="w-[90%] xl:w-[80%] m-auto pl-6 flex items-center lg:flex-row z-10">
                     <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
-                    <button className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
+                    <button onClick={() => {
+                        router.push("/office/account");
+                    }} className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
                 </div>
             </Tabs>
         </div>

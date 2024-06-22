@@ -1,6 +1,6 @@
 "use server";
 import prisma from '@/lib/prisma';
-import { generator_id, isIdUniqueUser } from '@/lib/dbid';
+import { generator_str, isIdUniqueUser } from '@/lib/dbid';
 import { encrypt, decrypt, encryptJWT, decryptJWT } from '@/lib/secret';
 import { cookies, headers } from 'next/headers';
 import { sessionData } from '@/type/sessionData';

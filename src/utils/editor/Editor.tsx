@@ -36,7 +36,6 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
 
     useEffect(() => {
         if (!ref.current) {
-            console.log('date blocks', data);
             const editor = new EditorJS({
                 holder: editorblock,
                 autofocus: true,
@@ -72,10 +71,12 @@ const Editor: React.FC<EditorProps> = ({ data, onChange, editorblock }) => {
     useEffect(() => {
         if (ref.current) {
             ref.current.isReady.then(() => {
-                ref.current?.render(data);
+                if (ref.current) {
+                    ref.current?.render(data);
+                }
             });
         }
-    }, [data]);
+    }, [data, editorblock]);
 
     return <article id={`${editorblock}`} className="bg-[#f9f9f9] dark:bg-black pt-3" />;
 };
