@@ -40,7 +40,7 @@ const profileMenuItems = [
     {
         label: "My Profile",
         icon: UserCircleIcon,
-        url: "/office/profile",
+        url: "/office/account/edit",
     },
     {
         label: "Setting",
@@ -82,7 +82,7 @@ function ProfileMenu({ src }: { src: string }) {
                         size="sm"
                         alt="tania andrew"
                         className="border border-gray-900 p-0.5"
-                        src={`https://cosi.bu.ac.th/collections/members/${src}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                        src={`${src}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
                     <ChevronDownIcon
                         strokeWidth={2.5}
                         className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""

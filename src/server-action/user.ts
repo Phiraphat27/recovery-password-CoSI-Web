@@ -5,8 +5,18 @@ import { generator_id, isIdUniqueUser } from '@/lib/dbid';
 import { cookies } from 'next/headers';
 import { decryptJWT, encrypt } from '@/lib/secret';
 import { memberProfile } from '@/type/member';
+import { File } from 'node-fetch';
 
-export async function createUser(data: memberProfile) {
+function dataURLtoFile(dataurl: any, filename: string) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, { type: mime });
+}
+
+export async function createAndUpdateUser(data: memberProfile) {
     const session = cookies().get("session")?.value as string;
     const token = await decryptJWT(session)
     if (token === null) {
@@ -15,41 +25,106 @@ export async function createUser(data: memberProfile) {
     const { user_password, ...rest } = data
     const isUnique = await isIdUniqueUser(14)
     const password = await encrypt(user_password as string)
-    if (isUnique) {
-        return await prisma.user.create({
-            data: {
-                user_id: isUnique,
-                user_password: password,
-                user_email: rest.email as string,
-                user_email_dispaly: rest.emailDisplay as string,
-                user_image: rest.image as string,
-                user_position: rest.position as string,
-                user_permission: rest.permission as string,
-                user_department: rest.department as string,
-                user_git: rest.github as string,
-                profile: {
-                    create: [
-                        {
-                            language_code: "en",
-                            name: rest.en.name as string,
-                            details: JSON.stringify(rest.en.biography) as string
-                        },
-                        {
-                            language_code: "th",
-                            name: rest.th.name as string,
-                            details: JSON.stringify(rest.th.biography) as string
-                        }
-                    ]
-                },
-            }
-        }).then((user) => {
-            return user
-        }).catch((err) => {
-            return err
+
+    let upload:any = {};
+
+    console.log(data.image)
+    console.log(data.imageName)
+
+    if (data.image && data.imageName) {
+        const imageFile = dataURLtoFile(data.image as string, data.imageName as string)
+        const image = new FormData()
+        image.append("file", imageFile as File)
+        upload = await fetch(`http://localhost:4000/upload`, {
+            method: "POST",
+            body: image
+        }).then((res) => {
+            return res.json()
+        }).then((res) => {
+            return res
         })
-    } else {
-        return "ID is not unique"
     }
+
+    let dataUpate:any = {
+        user_email: rest.email as string,
+        user_email_dispaly: rest.emailDisplay as string,
+        user_position: rest.position as string,
+        user_permission: rest.permission as string,
+        user_department: rest.department as string,
+        user_git: rest.github as string,
+        profile: {
+            update: [
+                {
+                    where: {
+                        language_code_user_id: {
+                            language_code: "en",
+                            user_id: rest.userId as string
+                        }
+                    },
+                    data: {
+                        name: rest.en.name as string,
+                        details: JSON.stringify(rest.en.biography) as string
+                    }
+                },
+                {
+                    where: {
+                        language_code_user_id: {
+                            language_code: "th",
+                            user_id: rest.userId as string
+                        }
+                    },
+                    data: {
+                        name: rest.th.name as string,
+                        details: JSON.stringify(rest.th.biography) as string
+                    }
+                }
+            ]
+        }
+    }
+
+    if (data.image && data.imageName) {
+        dataUpate = {
+            ...dataUpate,
+            user_image: upload.file.url as string
+        }
+    }
+
+    return await prisma.user.upsert({
+        where: {
+            user_id: rest.userId as string
+        },
+        update: {
+            ...dataUpate
+        },
+        create: {
+            user_id: isUnique as string,
+            user_password: password,
+            user_email: rest.email as string,
+            user_email_dispaly: rest.emailDisplay as string,
+            user_image: upload.file?.url as string,
+            user_position: rest.position as string,
+            user_permission: rest.permission as string,
+            user_department: rest.department as string,
+            user_git: rest.github as string,
+            profile: {
+                create: [
+                    {
+                        language_code: "en",
+                        name: rest.en.name as string,
+                        details: JSON.stringify(rest.en.biography) as string
+                    },
+                    {
+                        language_code: "th",
+                        name: rest.th.name as string,
+                        details: JSON.stringify(rest.th.biography) as string
+                    }
+                ]
+            }
+        }
+    }).then((user) => {
+        return user
+    }
+    )
 }
 
 export async function getUserById(id?: string) {
@@ -85,6 +160,7 @@ export async function getUserById(id?: string) {
     }).then((user) => {
         const { user_password, ...rest } = user as any
         const result = {
+            userId: rest.user_id,
             emailDisplay: rest.user_email_dispaly,
             position: rest.user_position,
             department: rest.user_department,
@@ -95,7 +171,7 @@ export async function getUserById(id?: string) {
             image: rest.user_image,
             th: {
                 name: rest.profile.find((item: any) => item.language_code === "th").name,
-                biography:rest.profile.find((item: any) => item.language_code === "th").details
+                biography: rest.profile.find((item: any) => item.language_code === "th").details
             },
             en: {
                 name: rest.profile.find((item: any) => item.language_code === "en").name,
@@ -103,9 +179,9 @@ export async function getUserById(id?: string) {
             }
         }
         return result
-        }).catch((err) => {
-            return err
-        })
+    }).catch((err) => {
+        return err
+    })
 }
 
 export async function getUserList() {

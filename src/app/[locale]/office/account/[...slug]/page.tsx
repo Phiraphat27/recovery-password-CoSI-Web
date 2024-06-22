@@ -2,7 +2,7 @@
 import AccountInfo from "@/components/account/form";
 import { useRouter } from "@/navigation";
 import { getOption } from "@/server-action/option";
-import { createUser, getUserById } from "@/server-action/user";
+import { createAndUpdateUser, getUserById } from "@/server-action/user";
 import { memberProfile } from "@/type/member";
 import { OptionAccount } from "@/type/option";
 import {
@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 
 export default function TabsCustomAnimation({ params } : { params: { slug: any;} }) {
     const [dataForm, setDataForm] = useState<memberProfile>({
+        userId : "",
         emailDisplay: "",
         position: "",
         department: "",
@@ -24,6 +25,7 @@ export default function TabsCustomAnimation({ params } : { params: { slug: any;}
         email: "",
         password: "",
         image: "",
+        imageName: "",
         th: {
             name: "",
             biography: {}
@@ -50,7 +52,6 @@ export default function TabsCustomAnimation({ params } : { params: { slug: any;}
             }
         }
         fetchData();
-        console.log(`path: ${params.slug}`)
     }, []);
 
     const data = [
@@ -71,7 +72,8 @@ export default function TabsCustomAnimation({ params } : { params: { slug: any;}
     ];
 
     const handleSave = async () => {
-        await createUser(dataForm).then((res) => {
+        console.log(`res: ${JSON.stringify(dataForm)}`)
+        await createAndUpdateUser(dataForm).then((res) => {
             router.push("/office/account");
         });
     }

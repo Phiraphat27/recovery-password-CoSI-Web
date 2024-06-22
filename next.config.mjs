@@ -9,7 +9,7 @@ const nextConfig = {
             {
                 source: '/api/files/:path*',
                 destination: 'http://localhost:4000/files/:path*',
-            },
+            }
         ]
     },images: {
         domains: ['cosi.bu.ac.th'],

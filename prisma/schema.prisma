@@ -122,7 +122,7 @@ model user {
   user_email                   String       @db.Text
   user_email_dispaly           String       @db.Text
   user_git                     String?      @db.Text
-  user_image                   String       @db.Text
+  user_image                   String?      @db.Text
   user_position                String?      @db.VarChar(8)
   user_permission              String?      @db.VarChar(8)
   user_department              String?      @db.VarChar(8)
@@ -161,7 +161,7 @@ model two_factor {
   auth_app   String? @db.Text
   enable     Boolean
   secret_app String? @db.LongText
-  user       user    @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "two_factor_ibfk_1")
+  user       user    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, map: "two_factor_ibfk_1")
 }
 
 model department {

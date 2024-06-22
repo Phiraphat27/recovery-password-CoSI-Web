@@ -19,6 +19,7 @@ export interface memberProfile {
     email: string;
     password: string;
     image: string;
+    imageName: string;
     th: {
         [key: string]: string | object;
         name: string;

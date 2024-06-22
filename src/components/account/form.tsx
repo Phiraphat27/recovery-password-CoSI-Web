@@ -35,7 +35,8 @@ export default function AccountInfo(
         setDataForm((prev: any) => {
             return {
                 ...prev,
-                image: uploadedImage.src
+                image: uploadedImage.src,
+                imageName: uploadedImage.file?.name
             }
         })
     }, [uploadedImage])
@@ -111,17 +112,7 @@ export default function AccountInfo(
                                 autoFocus
                                 onChange={handOnChangeLang}
                                 onFocus={(e) => e.target.placeholder = "Your Name"}
-                                onBlur={(e) => {
-                                    e.target.placeholder = ""
-                                    const name = e.target.value.split(" ")
-                                    if (lang == "en" && name && name.length > 1) {
-                                        document.getElementById("email")?.setAttribute("value", `${name[0]?.toLowerCase()}.${name[1]?.toLowerCase()?.slice(0, 4)}`)
-                                        setDataForm({
-                                            ...dataForm,
-                                            email: `${name[0]?.toLowerCase()}.${name[1]?.toLowerCase()?.slice(0, 4)}`
-                                        })
-                                    }
-                                }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                                onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                         </div>
                         <div className="my-4 flex flex-col lg:flex-row items-center gap-4 w-full">
                             <div className="w-full">
@@ -224,10 +215,10 @@ export default function AccountInfo(
                                         type="email"
                                         label="Email System"
                                         autoComplete="email"
-                                        value={dataForm.email}
+                                        value={dataForm.email.split("@")[0]}
                                         onChange={handOnChange}
                                         required
-                                        className="pointer-events-none pr-20 w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
+                                        className="pr-20 w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
                                         labelProps={{ className: "dark:text-gray-200 dark:peer-focus:text-white dark:peer-focus:before:!border-gray-200 dark:peer-focus:after:!border-gray-200" }}
                                         containerProps={{ className: "min-w-0 dark:text-white" }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}
                                     />
@@ -242,7 +233,7 @@ export default function AccountInfo(
                                     </Typography>
                                 </div>
                             </div>
-                            <div className={`w-full ${action !== "edit" ? "hidden" : ""}`}>
+                            {/* <div className={`w-full ${action !== "edit" ? "hidden" : ""}`}>
                                 <div className="relative w-full min-w-[200px] h-10">
                                     <Input
                                         className="w-[300px] !border-t-gray-100 dark:border-t-gray-50 dark:focus:border-gray-200 dark:focus:border-t-transparent "
@@ -258,7 +249,7 @@ export default function AccountInfo(
                                         onFocus={(e) => e.target.placeholder = "********"}
                                         onBlur={(e) => e.target.placeholder = ""} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="w-full">
                                 <div className="editor">
                                     <div className="text-lg font-medium text-gray-600 pb-2">Biography</div>

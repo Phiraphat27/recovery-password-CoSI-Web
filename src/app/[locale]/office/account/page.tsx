@@ -27,7 +27,7 @@ export default function AccountList() {
 
                 const newData = data.map((item) => {
                     return {
-                        img: "https://cosi.bu.ac.th/collections/members/"+item.user_image,
+                        img: item.user_image,
                         name: item.profile[0].name,
                         email: item.user_email,
                         job: item.position && item.position.position_name && item.position.position_name[0] ? item.position.position_name[0].name : "No Position",
