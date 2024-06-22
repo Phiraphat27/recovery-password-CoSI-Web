@@ -23,6 +23,7 @@ import {
 import { Link, useRouter } from "@/navigation";
 import { useLocale } from "next-intl";
 import { deleteUser } from "@/server-action/user";
+import { MessageDialog } from "@/components/dialog/addPosition";
 
 interface TableRow {
     [key: string]: any;
@@ -142,6 +143,7 @@ const SortableTable: React.FC<SortableTableProps> = (
                         </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                        {/* <MessageDialog /> */}
                         {btnAdd &&
                             <Button className="flex items-center gap-3" size="sm"
                                 onClick={() => {

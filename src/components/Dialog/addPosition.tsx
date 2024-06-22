@@ -17,12 +17,12 @@ export function MessageDialog() {
     return (
         <>
             <Button onClick={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Message Dialog</Button>
-            <Dialog open={open} size="xs" handler={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Dialog open={open} size="md" handler={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <div className="flex items-center justify-between">
                     <DialogHeader className="flex flex-col items-start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         {" "}
                         <Typography className="mb-1" variant="h4" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                            New message to @{" "}
+                            Option Manager{" "}
                         </Typography>
                     </DialogHeader>
                     <svg
@@ -51,14 +51,14 @@ export function MessageDialog() {
                         <Textarea label="Message" onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
                     </div>
                 </DialogBody>
-                <DialogFooter className="space-x-2" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                {/* <DialogFooter className="space-x-2" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                     <Button variant="text" color="gray" onClick={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         cancel
                     </Button>
                     <Button variant="gradient" color="gray" onClick={handleOpen} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                         send message
                     </Button>
-                </DialogFooter>
+                </DialogFooter> */}
             </Dialog>
         </>
     );
