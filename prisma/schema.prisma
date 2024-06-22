@@ -39,14 +39,14 @@ model log {
 }
 
 model news {
-  news_id      String   @id @db.VarChar(10)
-  title_en     String   @db.Text
-  title_th     String   @db.Text
-  content_en   String   @db.LongText
-  content_th   String   @db.LongText
-  publish_date DateTime @default(now()) @db.Timestamp(0)
-  news_draft   Boolean  @default(true)
-  news_image   String   @db.Text
+  news_id       String    @id @db.VarChar(10)
+  language_code String    @db.VarChar(5)
+  title         String    @db.Text
+  content       String?   @db.Text
+  edit_date     DateTime  @default(now()) @db.Timestamp(0)
+  publish_date  DateTime? @db.Timestamp(0)
+  news_draft    Boolean   @default(true)
+  news_image    String    @db.Text
 }
 
 model papers {
