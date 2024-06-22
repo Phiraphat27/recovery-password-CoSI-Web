@@ -81,7 +81,7 @@ function ProfileMenu({ src }: { src: string }) {
                         variant="circular"
                         size="sm"
                         alt="tania andrew"
-                        className="border border-gray-900 p-0.5"
+                        className="border border-gray-900 p-0.5 object-top"
                         src={`${src}`} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
                     <ChevronDownIcon
                         strokeWidth={2.5}

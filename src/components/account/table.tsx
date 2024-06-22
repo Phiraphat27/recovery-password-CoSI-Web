@@ -5,7 +5,7 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, UserPlusIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
@@ -22,6 +22,7 @@ import {
 
 import { Link, useRouter } from "@/navigation";
 import { useLocale } from "next-intl";
+import { deleteUser } from "@/server-action/user";
 
 interface TableRow {
     [key: string]: any;
@@ -39,7 +40,7 @@ interface SortableTableProps {
     subtitle: string;
     btnAdd: boolean;
     btnAddName: string;
-    btnAddLink: string ;
+    btnAddLink: string;
 }
 
 const SortableTable: React.FC<SortableTableProps> = (
@@ -73,9 +74,9 @@ const SortableTable: React.FC<SortableTableProps> = (
         setSortConfig({ key, direction });
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         setRows(TABLE_ROWS)
-    },[TABLE_ROWS])
+    }, [TABLE_ROWS])
 
     const sortedRows = useMemo(() => {
         let sortableItems = [...rows];
@@ -109,6 +110,24 @@ const SortableTable: React.FC<SortableTableProps> = (
     const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
 
     const router = useRouter();
+
+    const handleDelete = (id: string) => {
+        document.getElementById(`icon-del-${id}`)?.classList.add('hidden');
+        document.getElementById(`btn-del-${id}`)?.classList.remove('hidden');
+
+        setTimeout(() => {
+            document.getElementById(`icon-del-${id}`)?.classList.remove('hidden');
+            document.getElementById(`btn-del-${id}`)?.classList.add('hidden');
+        }, 3500);
+    }
+
+    const handleDeleteUser = async (id: string) => {
+        deleteUser(id).then((res) => {
+            if (res) {
+                setRows(rows.filter((row) => row.id !== id))
+            }
+        })
+    }
 
     return (
         <Card className="h-full w-full max-w-6xl mx-auto" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -182,7 +201,7 @@ const SortableTable: React.FC<SortableTableProps> = (
                                     <tr key={row.name}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={row.img} alt={row.name} size="sm" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
+                                                <Avatar src={row.img} alt={row.name} size="sm" className="object-top" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
                                                 <div className="flex flex-col">
                                                     <Typography
                                                         variant="small"
@@ -241,11 +260,29 @@ const SortableTable: React.FC<SortableTableProps> = (
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
                                                 <Link href={`/office/account/edit/${encodeURIComponent(row.id)}`}>
-                                                <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                                                    <PencilIcon className="h-4 w-4" />
-                                                </IconButton>
+                                                    <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                        <PencilIcon className="h-4 w-4" />
+                                                    </IconButton>
                                                 </Link>
                                             </Tooltip>
+                                            <Tooltip content="Delete User">
+                                                <IconButton 
+                                                id={`icon-del-${row.id}`} 
+                                                variant="text"
+                                                onClick={() => handleDelete(row.id)}
+                                                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                    <TrashIcon className="h-4 w-4" />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Button
+                                                variant="outlined"
+                                                size="sm"
+                                                id={`btn-del-${row.id}`}
+                                                onClick={() => handleDeleteUser(row.id)}
+                                                className="hidden text-red-500 border-red-500 hover:bg-red-700 hover:text-white"
+                                                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                Delete
+                                            </Button>
                                         </td>
                                     </tr>
                                 );

@@ -99,7 +99,7 @@ export async function createAndUpdateUser(data: memberProfile) {
         create: {
             user_id: isUnique as string,
             user_password: password,
-            user_email: rest.email as string,
+            user_email: rest.email+"@cosi.bu.ac.th" as string,
             user_email_dispaly: rest.emailDisplay as string,
             user_image: upload.file?.url as string,
             user_position: rest.position as string,
@@ -125,6 +125,16 @@ export async function createAndUpdateUser(data: memberProfile) {
         return user
     }
     )
+}
+
+export async function deleteUser(id: string) {
+    return await prisma.user.delete({
+        where: {
+            user_id: id
+        }
+    }).then((user) => {
+        return user
+    })
 }
 
 export async function getUserById(id?: string) {
