@@ -39,11 +39,11 @@ model log {
 }
 
 model news {
-  news_id      String         @id @db.VarChar(10)
+  news_id      String         @id @db.VarChar(14)
   edit_date    DateTime       @default(now()) @db.Timestamp(0)
   publish_date DateTime?      @db.Timestamp(0)
   news_draft   Boolean        @default(true)
-  news_image   String         @db.Text
+  news_image   String?        @db.Text
   news_content news_content[]
 }
 
@@ -182,7 +182,7 @@ model news_content {
   title         String @db.Text
   content       String @db.Text
   language_code String @db.VarChar(5)
-  news_id       String @db.VarChar(10)
+  news_id       String @db.VarChar(14)
   news          news   @relation(fields: [news_id], references: [news_id], onDelete: Cascade, map: "news_content_ibfk_1")
 
   @@id([language_code, news_id])

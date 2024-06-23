@@ -16,7 +16,7 @@ import { News } from "@/type/news";
 import { useEffect, useState } from "react";
 import { useRouter } from "@/navigation";
 import NewsForm from "@/components/news/form";
-import { createAndUpdateNews } from "@/server-action/news";
+import { createAndUpdateNews, getNewsById } from "@/server-action/news";
 
 export default function SimpleRegistrationForm({ params }: { params: { slug: any; } }) {
     const [dataForm, setDataForm] = useState<News>({
@@ -57,19 +57,16 @@ export default function SimpleRegistrationForm({ params }: { params: { slug: any
 
     useEffect(() => {
         if (params.slug[0] !== "add" && params.slug[0] !== "edit") {
-            router.push("/office/news");
+            router.push("/office/account");
         }
 
-        // async function fetchData() {
-        //     const res = await getOption();
-        //     setOption(res);
-
-        //     if (params.slug[0] === "edit") {
-        //         const datauser = await getUserById(params.slug[1] ? params.slug[1] : null);
-        //         setDataForm(datauser as memberProfile);
-        //     }
-        // }
-        // fetchData();
+        async function fetchData() {
+            if (params.slug[0] === "edit") {
+                const datauser = await getNewsById(params.slug[1] ? params.slug[1] : null);
+                setDataForm(datauser as unknown as News);
+            }
+        }
+        fetchData();
     }, []);
 
     const handleSave = async () => {
@@ -111,7 +108,7 @@ export default function SimpleRegistrationForm({ params }: { params: { slug: any
                 <div className="w-full flex items-center ">
                     <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
                     <button onClick={() => {
-                        router.push("/office/account");
+                        router.push("/office/news");
                     }} className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
                 </div>
             </Tabs>

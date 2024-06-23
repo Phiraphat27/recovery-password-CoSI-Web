@@ -24,6 +24,7 @@ import { Link, useRouter } from "@/navigation";
 import { useLocale } from "next-intl";
 import { deleteUser } from "@/server-action/user";
 import { MessageDialog } from "@/components/dialog/addPosition";
+import { deleteNews } from "@/server-action/news";
 
 interface TableRow {
     [key: string]: any;
@@ -123,11 +124,12 @@ const SortableTable: React.FC<SortableTableProps> = (
     }
 
     const handleDeleteUser = async (id: string) => {
-        // deleteUser(id).then((res) => {
-        //     if (res) {
-        //         setRows(rows.filter((row) => row.id !== id))
-        //     }
-        // })
+        console.log(id)
+        deleteNews(id).then((res) => {
+            if (res) {
+                setRows(rows.filter((row) => row.id !== id))
+            }
+        })
     }
 
     return (
@@ -251,14 +253,16 @@ const SortableTable: React.FC<SortableTableProps> = (
                                                 variant="small"
                                                 color="blue-gray"
                                                 className="font-normal" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                                            >
-                                                {new Date(row.datePublish).toLocaleString(localActive, {
-                                                    year: "numeric",
-                                                    month: "short",
-                                                    day: "numeric",
-                                                    hour: "numeric",
-                                                    minute: "numeric",
-                                                    second: "numeric",
-                                                })
+                                                {row.datePublish 
+                                                ? new Date(row.datePublish).toLocaleString(localActive, {
+                                                        year: "numeric",
+                                                        month: "short",
+                                                        day: "numeric",
+                                                        hour: "numeric",
+                                                        minute: "numeric",
+                                                        second: "numeric",
+                                                    })
+                                                    : "Draft"
                                                 }
                                             </Typography>
                                         </td>
@@ -280,18 +284,18 @@ const SortableTable: React.FC<SortableTableProps> = (
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                <Link href={`/office/account/edit/${encodeURIComponent(row.id)}`}>
+                                                <Link href={`/office/news/edit/${encodeURIComponent(row.id)}`}>
                                                     <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Link>
                                             </Tooltip>
                                             <Tooltip content="Delete User">
-                                                <IconButton 
-                                                id={`icon-del-${row.id}`} 
-                                                variant="text"
-                                                onClick={() => handleDelete(row.id)}
-                                                placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                                                <IconButton
+                                                    id={`icon-del-${row.id}`}
+                                                    variant="text"
+                                                    onClick={() => handleDelete(row.id)}
+                                                    placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                     <TrashIcon className="h-4 w-4" />
                                                 </IconButton>
                                             </Tooltip>

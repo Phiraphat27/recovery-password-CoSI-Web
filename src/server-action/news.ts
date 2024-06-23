@@ -14,9 +14,9 @@ export async function createAndUpdateNews(data: News) {
     const token = await decryptJWT(session);
     if (!token) return;
 
-    const { image, ...dataForm } = data;
+    const { ...dataForm } = data;
 
-    console.log(dataForm as News)
+    // console.log(dataForm as News)
 
     const isUnique = await isIdUniqueUser(14);
     let upload: any = {};
@@ -76,7 +76,7 @@ export async function createAndUpdateNews(data: News) {
         update: { ...dataUpdate },
         create: {
             news_id: isUnique,
-            news_image: data.image && data.imageName ? upload.file.url : null,
+            news_image: upload?.file?.url,
             publish_date: data.publish_date,
             news_draft: data.draft,
             news_content: {
@@ -116,9 +116,11 @@ export async function getNewsList() {
 export async function getNewsById(id: string) {
     const session = cookies().get("session")?.value as string;
     const token = await decryptJWT(session)
+
     if (token === null) {
         return
     }
+
     const news = await prisma.news.findFirst({
         where: {
             news_id: id
@@ -127,5 +129,41 @@ export async function getNewsById(id: string) {
             news_content: true
         }
     })
-    return news
+    
+    if (!news) {
+        return null;
+    }
+    
+    const newsData = {
+        id: news.news_id,
+        image: news.news_image,
+        image_name: "",
+        draft: news.news_draft,
+        publish_date: news.publish_date,
+        th: {
+            title: news.news_content.filter((item) => item.language_code === "th")[0].title,
+            content: news.news_content.filter((item) => item.language_code === "th")[0].content
+        },
+        en: {
+            title: news.news_content.filter((item) => item.language_code === "en")[0].title,
+            content: news.news_content.filter((item) => item.language_code === "en")[0].content
+        }
+    }
+    
+    return newsData;
+}
+
+export async function deleteNews(id: string) {
+    const session = cookies().get("session")?.value as string;
+    const token = await decryptJWT(session)
+
+    if (token === null) {
+        return
+    }
+
+    return await prisma.news.delete({
+        where: {
+            news_id: id
+        }
+    })
 }

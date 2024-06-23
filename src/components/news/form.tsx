@@ -19,6 +19,7 @@ export default function NewsForm(
 ) {
     const [uploadedImage, setUploadedImage] = useState<{ file: File | null, src: string | null }>({ file: null, src: null });
     const [content, setContent] = useState<any>(null);
+    const [defaultContent, setDefaultContent] = useState<OutputData>({} as OutputData)
 
     const handleImageUpload = (imageFile: File | null, imageSrc: string | null) => {
         setUploadedImage({ file: imageFile, src: imageSrc });
@@ -45,6 +46,16 @@ export default function NewsForm(
             }
         })
     }, [content])
+
+    useEffect(() => {
+        if (dataForm[lang].content !== undefined && dataForm[lang].content !== null && dataForm[lang].content !== "" && typeof dataForm[lang].content === "string") {
+            try {
+                setDefaultContent(JSON.parse(dataForm[lang].content));
+            } catch (error) {
+                // console.log("error", error)
+            }
+        }
+    }, [dataForm]);
     
     const handOnChangeLang = (e: any) => {
         setDataForm((prev: any) => {
@@ -70,7 +81,7 @@ export default function NewsForm(
                             label="Title"
                             name="title"
                             required
-                            value={dataForm[lang].name}
+                            value={dataForm[lang].title}
                             onChange={handOnChangeLang}
                             autoFocus
                             // onChange={handOnChangeLang}
@@ -80,7 +91,7 @@ export default function NewsForm(
                     <ImageUpload className="w-[320px] h-[240px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[480px] lg:h-[280px] my-10 lg:my-0 border-2 border-dashed border-gray-400 rounded-[10px] flex justify-center items-center cursor-pointer"
                         onImageUpload={handleImageUpload}
                         image={dataForm.image} />
-                    <Editor data={{} as OutputData} onChange={setContent} editorblock={`editorjs-container-${lang}`} />
+                    <Editor data={defaultContent} onChange={setContent} editorblock={`editorjs-container-${lang}`} />
                 </div>
             </div>
         ))
