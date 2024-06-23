@@ -5,16 +5,17 @@ import { generator_str, isIdUniqueUser } from '@/lib/dbid';
 import { cookies } from 'next/headers';
 import { decryptJWT, encrypt } from '@/lib/secret';
 import { memberProfile } from '@/type/member';
-import { File } from 'node-fetch';
+import { dataURLtoFile } from '@/utils/image/conver';
+// import { File } from 'node-fetch';
 
-function dataURLtoFile(dataurl: any, filename: string) {
-    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-}
+// function dataURLtoFile(dataurl: any, filename: string) {
+//     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+//         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
+//     return new File([u8arr], filename, { type: mime });
+// }
 
 export async function createAndUpdateUser(data: memberProfile) {
     const session = cookies().get("session")?.value as string;
@@ -32,7 +33,7 @@ export async function createAndUpdateUser(data: memberProfile) {
     console.log(data.imageName)
 
     if (data.image && data.imageName) {
-        const imageFile = dataURLtoFile(data.image as string, data.imageName as string)
+        const imageFile = await dataURLtoFile(data.image as string, data.imageName as string)
         const image = new FormData()
         image.append("file", imageFile as File)
         upload = await fetch(`http://localhost:4000/upload`, {

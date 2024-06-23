@@ -1,88 +1,86 @@
 "use client";
-import AccountInfo from "@/components/account/form";
-import { useRouter } from "@/navigation";
-import { getOption } from "@/server-action/option";
-import { createAndUpdateUser, getUserById } from "@/server-action/user";
-import { memberProfile } from "@/type/member";
-import { OptionAccount } from "@/type/option";
+
 import {
+    Card,
+    Input,
+    Checkbox,
+    Button,
+    Typography,
     Tabs,
     TabsHeader,
     TabsBody,
-    Tab,
     TabPanel,
+    Tab,
 } from "@material-tailwind/react";
+import { News } from "@/type/news";
 import { useEffect, useState } from "react";
+import { useRouter } from "@/navigation";
+import NewsForm from "@/components/news/form";
+import { createAndUpdateNews } from "@/server-action/news";
 
-export default function TabsCustomAnimation({ params }: { params: { slug: any; } }) {
-    const [dataForm, setDataForm] = useState<memberProfile>({
-        userId: "",
-        emailDisplay: "",
-        position: "",
-        department: "",
-        permission: "",
-        github: "",
-        email: "",
-        password: "",
+export default function SimpleRegistrationForm({ params }: { params: { slug: any; } }) {
+    const [dataForm, setDataForm] = useState<News>({
+        id: "",
         image: "",
         imageName: "",
+        draft: true,
+        updated_at: null,
+        publish_date: null,
         th: {
-            name: "",
-            biography: {}
+            title: "",
+            content: "",
         },
         en: {
-            name: "",
-            biography: {}
+            title: "",
+            content: "",
         }
     });
-
-    const router = useRouter();
-
-    const [option, setOption] = useState<OptionAccount>();
-
-    useEffect(() => {
-        if (params.slug[0] !== "add" && params.slug[0] !== "edit") {
-            router.push("/office/account");
-        }
-
-        async function fetchData() {
-            const res = await getOption();
-            setOption(res);
-
-            if (params.slug[0] === "edit") {
-                const datauser = await getUserById(params.slug[1] ? params.slug[1] : null);
-                setDataForm(datauser as memberProfile);
-            }
-        }
-        fetchData();
-    }, []);
-
+    
     const data = [
         {
             label: "English",
             value: "EN",
             desc: <>
-                <AccountInfo action={params.slug[0]} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="en" />
+                <NewsForm dataForm={dataForm} setDataForm={setDataForm} lang="en" />
             </>,
         },
         {
             label: "Thai",
             value: "TH",
             desc: <>
-                <AccountInfo action={params.slug[0]} option={option as OptionAccount} dataForm={dataForm} setDataForm={setDataForm} lang="th" />
+                <NewsForm dataForm={dataForm} setDataForm={setDataForm} lang="th" />
             </>,
         }
     ];
 
+    const router = useRouter();
+
+    useEffect(() => {
+        if (params.slug[0] !== "add" && params.slug[0] !== "edit") {
+            router.push("/office/news");
+        }
+
+        // async function fetchData() {
+        //     const res = await getOption();
+        //     setOption(res);
+
+        //     if (params.slug[0] === "edit") {
+        //         const datauser = await getUserById(params.slug[1] ? params.slug[1] : null);
+        //         setDataForm(datauser as memberProfile);
+        //     }
+        // }
+        // fetchData();
+    }, []);
+
     const handleSave = async () => {
-        console.log(`res: ${JSON.stringify(dataForm)}`)
-        await createAndUpdateUser(dataForm).then((res) => {
-            router.push("/office/account");
+        // console.log(`res: ${JSON.stringify(dataForm)}`)
+        await createAndUpdateNews(dataForm).then((res) => {
+            router.push("/office/news");
         });
     }
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
             <Tabs id="custom-animation" value="EN">
                 <div className="flex items-center justify-center">
                     <TabsHeader className="dark:bg-white bg-gray-300"
@@ -110,7 +108,7 @@ export default function TabsCustomAnimation({ params }: { params: { slug: any; }
                         </TabPanel>
                     ))}
                 </TabsBody>
-                <div className="w-[90%] xl:w-[80%] m-auto pl-6 flex items-center lg:flex-row z-10">
+                <div className="w-full flex items-center ">
                     <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
                     <button onClick={() => {
                         router.push("/office/account");

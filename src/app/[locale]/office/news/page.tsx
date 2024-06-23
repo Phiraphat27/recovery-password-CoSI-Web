@@ -26,7 +26,7 @@ export default function NewsList() {
 
             const newData = data.map((item) => {
                 return {
-                    title: item.title,
+                    title: item.news_content.filter((item: any) => item.language_code === localActive)[0].title,
                     datePublish: item.publish_date ? new Date(item.publish_date).getTime() : null,
                     dateEdit: item.edit_date ? new Date(item.edit_date).getTime() : null,
                     publish: !item.news_draft,

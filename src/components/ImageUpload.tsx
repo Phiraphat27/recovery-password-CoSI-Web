@@ -4,9 +4,10 @@ import { Accept, useDropzone } from 'react-dropzone';
 interface ImageUploadProps {
     onImageUpload: (imageFile: File | null, imageSrc: string | null) => void;
     image?: string;
+    className ?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, image }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, image, className }) => {
     const [imageSrc, setImageSrc] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -42,7 +43,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, image }) => {
 
     return (
         <div className="flex flex-col items-center">
-            <div {...getRootProps()} className="w-[220px] h-[340px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[380px] lg:h-[680px] my-10 lg:my-0 border-2 border-dashed border-gray-400 rounded-[10px] flex justify-center items-center cursor-pointer">
+            <div {...getRootProps()} className={className}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
                     <p>Drop the image here ...</p>

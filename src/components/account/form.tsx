@@ -10,8 +10,8 @@ export default function AccountInfo(
     {
         lang,
         action,
-        dataForm,
         option,
+        dataForm,
         setDataForm
     }:
         {
@@ -267,7 +267,9 @@ export default function AccountInfo(
                         </div>
                     </div>
                 </div>
-                <ImageUpload onImageUpload={handleImageUpload} image={dataForm.image} />
+                <ImageUpload className="w-[220px] h-[340px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[380px] lg:h-[680px] my-10 lg:my-0 border-2 border-dashed border-gray-400 rounded-[10px] flex justify-center items-center cursor-pointer"
+                    onImageUpload={handleImageUpload}
+                    image={dataForm.image} />
                 {/* <div className="w-[220px] h-[340px] mobile-lg:w-[264px] mobile-lg:h-[510px] lg:w-[480px] lg:h-[680px] my-10 lg:my-0">
                 <img className="pointer-events-none object-cover object-center w-full h-full rounded-[10px]" src="https://cosi.bu.ac.th/collections/members/C7ZSsXMF9NZO08b.jpg" alt="profile" />
             </div> */}
