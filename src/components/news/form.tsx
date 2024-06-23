@@ -56,7 +56,7 @@ export default function NewsForm(
             }
         }
     }, [dataForm]);
-    
+
     const handOnChangeLang = (e: any) => {
         setDataForm((prev: any) => {
             return {

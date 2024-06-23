@@ -25,6 +25,7 @@ import { useLocale } from "next-intl";
 import { deleteUser } from "@/server-action/user";
 import { MessageDialog } from "@/components/dialog/addPosition";
 import { deleteNews } from "@/server-action/news";
+import { deletePublications } from "@/server-action/publications";
 
 interface TableRow {
     [key: string]: any;
@@ -125,10 +126,8 @@ const SortableTable: React.FC<SortableTableProps> = (
 
     const handleDeleteUser = async (id: string) => {
         console.log(id)
-        deleteNews(id).then((res) => {
-            if (res) {
-                setRows(rows.filter((row) => row.id !== id))
-            }
+        deletePublications(id).then((res) => {
+            setRows(rows.filter((row) => row.id !== id))
         })
     }
 
@@ -284,7 +283,7 @@ const SortableTable: React.FC<SortableTableProps> = (
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                <Link href={`/office/news/edit/${encodeURIComponent(row.id)}`}>
+                                                <Link href={`/office/publications/edit/${encodeURIComponent(row.id)}`}>
                                                     <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>

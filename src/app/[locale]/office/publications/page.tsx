@@ -5,7 +5,7 @@ import { useLocale } from "next-intl";
 import { getNewsList } from "@/server-action/news";
 import { getPublicationsList } from "@/server-action/publications";
 
-export default function NewsList() {
+export default function NewsPublications() {
     const TABLE_HEAD = [
         { label: "Title", key: "title" },
         { label: "Publish", key: "publish"},
@@ -35,11 +35,11 @@ export default function NewsList() {
             <TablePublish
                 TABLE_HEAD={TABLE_HEAD}
                 TABLE_ROWS={data}
-                title="News List"
-                subtitle="List of all News in the system"
+                title="Publications List"
+                subtitle="List of all Publications in the system"
                 btnAdd={true}
-                btnAddName="Add News"
-                btnAddLink="/office/news/add"
+                btnAddName="Add Publications"
+                btnAddLink="/office/publications/add"
             />
         </div>
     );
