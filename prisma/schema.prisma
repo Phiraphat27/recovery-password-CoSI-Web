@@ -55,6 +55,8 @@ model papers {
   paper_keyworlds String?  @db.Text
   paper_date      DateTime @db.Date
   paper_url       String?  @db.Text
+  edit_date       DateTime @default(now()) @db.Timestamp(0)
+  publish_draft   Boolean  @default(true)
 }
 
 model permission {

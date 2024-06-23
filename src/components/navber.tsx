@@ -25,7 +25,8 @@ import {
     PowerIcon,
     RocketLaunchIcon,
     Bars2Icon,
-    NewspaperIcon
+    NewspaperIcon,
+    DocumentTextIcon
 } from "@heroicons/react/24/solid";
 
 import { getSession, logout } from "@/server-action/auth";
@@ -219,6 +220,11 @@ const navListItems = [
         label: "News",
         icon: NewspaperIcon,
         url: "/office/news"
+    },
+    {
+        label: "Publications",
+        icon: DocumentTextIcon,
+        url: "/office/publications",
     },
     {
         label: "Docs",
