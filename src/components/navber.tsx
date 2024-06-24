@@ -16,11 +16,11 @@ import {
 import {
     CubeTransparentIcon,
     UserCircleIcon,
-    CodeBracketSquareIcon,
+    FolderIcon,
     Square3Stack3DIcon,
     ChevronDownIcon,
     Cog6ToothIcon,
-    InboxArrowDownIcon,
+    ClockIcon,
     LifebuoyIcon,
     PowerIcon,
     RocketLaunchIcon,
@@ -227,16 +227,21 @@ const navListItems = [
         url: "/office/publications",
     },
     {
-        label: "Docs",
-        icon: CodeBracketSquareIcon,
-        url: "/office/docs"
+        label: "Working Hours",
+        icon: ClockIcon,
+        url: "/office/working-hours"
+    },
+    {
+        label: "Files",
+        icon: FolderIcon,
+        url: "/office/files"
     },
 ];
 
 function NavList() {
     return (
         <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center">
-            <NavListMenu />
+            {/* <NavListMenu /> */}
             {navListItems.map(({ label, icon, url }, key) => (
                 <Typography
                     key={label}

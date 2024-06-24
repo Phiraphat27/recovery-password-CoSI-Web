@@ -12,5 +12,13 @@ const config: typeof withMT = {
   plugins: [
     require('@tailwindcss/typography'),
   ],
+  theme: {
+    extend: {
+      colors: {
+        'git-badges-main': 'rgb(113, 183, 255)',
+        'git-badges-sec': 'rgba(64, 158, 255, 0.1)',
+      },
+    },
+  },
 };
 export default config;
