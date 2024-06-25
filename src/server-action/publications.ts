@@ -14,6 +14,8 @@ export async function createPublications(data: any) {
 
     const id = await isIdUniqueUser(10);
 
+    console.log("data: ", data);
+
     await prisma.papers.upsert({
         where: {
             paper_id: data.id
@@ -25,7 +27,7 @@ export async function createPublications(data: any) {
             paper_url: data.link,
             paper_keyworlds: data.keyworlds,
             paper_date: data.datePublish ? new Date(data.datePublish) : null,
-            publish_draft: !data.publish,
+            paper_draft: data.draft,
         },
         create: {
             paper_id: id,
@@ -35,7 +37,7 @@ export async function createPublications(data: any) {
             paper_url: data.link,
             paper_keyworlds: data.keyworlds,
             paper_date: data.datePublish ? new Date(data.datePublish) : null,
-            publish_draft: !data.publish,
+            paper_draft: data.draft,
         }
     });
 
@@ -72,7 +74,7 @@ export async function getPublicationsList() {
             title: item.paper_title,
             datePublish: item.paper_date ? new Date(item.paper_date).getTime() : null,
             dateEdit: item.edit_date ? new Date(item.edit_date).getTime() : null,
-            publish: !item.publish_draft,
+            publish: !item.paper_draft,
             id: item.paper_id,
         };
     });
@@ -103,7 +105,7 @@ export async function getPublicationsById(id: string) {
         keyworlds: data.paper_keyworlds,
         datePublish: data.paper_date ? new Date(data.paper_date).getTime() : null,
         dateEdit: data.edit_date ? new Date(data.edit_date).getTime() : null,
-        publish: !data.publish_draft,
+        draft: data.paper_draft,
         id: data.paper_id,
     };
 

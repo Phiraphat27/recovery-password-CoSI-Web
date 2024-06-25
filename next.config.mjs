@@ -11,8 +11,13 @@ const nextConfig = {
                 destination: 'http://localhost:4000/files/:path*',
             }
         ]
-    },images: {
+    }, images: {
         domains: ['cosi.bu.ac.th'],
+    },
+    experimental: {
+        serverActions: {
+            bodySizeLimit: '5mb',
+        },
     },
 };
 

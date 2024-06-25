@@ -53,10 +53,10 @@ model papers {
   paper_authors   String    @db.Text
   paper_abstract  String    @db.Text
   paper_keyworlds String?   @db.Text
-  paper_date      DateTime? @db.Date
+  paper_date      DateTime? @db.Timestamp(0)
   paper_url       String?   @db.Text
   edit_date       DateTime  @default(now()) @db.Timestamp(0)
-  publish_draft   Boolean   @default(true)
+  paper_draft     Boolean   @default(true)
 }
 
 model permission {
@@ -106,7 +106,7 @@ model profile {
 model time_entry {
   id         Int       @id @default(autoincrement())
   userId     String    @db.VarChar(14)
-  entryTime  DateTime  @default(now())
+  entryTime  DateTime  @default(now()) @db.Timestamp(0)
   exitTime   DateTime?
   time_hours Float?
   user       user      @relation(fields: [userId], references: [user_id], onDelete: Cascade, map: "time_entry_ibfk_1")

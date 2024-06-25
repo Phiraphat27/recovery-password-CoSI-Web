@@ -11,6 +11,7 @@ import {
     TabsBody,
     TabPanel,
     Tab,
+    Switch,
 } from "@material-tailwind/react";
 import { News } from "@/type/news";
 import { useEffect, useState } from "react";
@@ -19,13 +20,13 @@ import PublicationsForm from "@/components/publications/form";
 import { createPublications, getPublicationsById } from "@/server-action/publications";
 
 export default function SimpleRegistrationForm({ params }: { params: { slug: any; } }) {
-    const [dataForm, setDataForm] = useState<News>({
+    const [dataForm, setDataForm] = useState<any>({
         id: "",
         image: "",
         imageName: "",
         draft: true,
         updated_at: null,
-        publish_date: null,
+        datePublish: null,
         th: {
             title: "",
             content: "",
@@ -59,15 +60,26 @@ export default function SimpleRegistrationForm({ params }: { params: { slug: any
         });
     }
 
+    const handleSwitch = (e: any) => {
+        setDataForm({
+            ...dataForm,
+            draft: !e.target.checked,
+            datePublish: !e.target.checked ? dataForm.datePublish : new Date(),
+        });
+    }
+
     return (
         <div className="max-w-6xl mx-auto">
             <PublicationsForm dataForm={dataForm} setDataForm={setDataForm} />
-            <div className="w-full pt-2 flex items-center ">
-                    <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
-                    <button onClick={() => {
-                        router.push("/office/publications");
-                    }} className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
-                </div>
+            <div className="w-full pt-2 flex items-center gap-4 ">
+                <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+                <button onClick={() => {
+                    router.push("/office/publications");
+                }} className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                {params.slug[0] == "edit" &&
+                    <Switch color="green" label="Publish" className="bg-gray-300" checked={!dataForm.draft} onChange={handleSwitch} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                }
+            </div>
         </div>
     );
 }

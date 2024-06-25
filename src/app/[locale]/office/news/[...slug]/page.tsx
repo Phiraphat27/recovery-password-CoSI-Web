@@ -11,6 +11,7 @@ import {
     TabsBody,
     TabPanel,
     Tab,
+    Switch,
 } from "@material-tailwind/react";
 import { News } from "@/type/news";
 import { useEffect, useState } from "react";
@@ -35,7 +36,7 @@ export default function SimpleRegistrationForm({ params }: { params: { slug: any
             content: "",
         }
     });
-    
+
     const data = [
         {
             label: "English",
@@ -76,6 +77,14 @@ export default function SimpleRegistrationForm({ params }: { params: { slug: any
         });
     }
 
+    const handleSwitch = (e: any) => {
+        setDataForm({
+            ...dataForm,
+            draft: !e.target.checked,
+            publish_date: !e.target.checked ? dataForm.publish_date : new Date(),
+        });
+    }
+
     return (
         <div className="max-w-6xl mx-auto">
             <Tabs id="custom-animation" value="EN">
@@ -105,11 +114,16 @@ export default function SimpleRegistrationForm({ params }: { params: { slug: any
                         </TabPanel>
                     ))}
                 </TabsBody>
-                <div className="w-full flex items-center ">
-                    <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
-                    <button onClick={() => {
-                        router.push("/office/news");
-                    }} className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md ml-4">Cancel</button>
+                <div className="w-full flex justify-center items-center ">
+                    <div className="flex w-[68%] gap-4">
+                        <button onClick={handleSave} className="dark:bg-blue-600 dark:text-white bg-blue-500 text-white px-4 py-2 rounded-md">Save</button>
+                        <button onClick={() => {
+                            router.push("/office/news");
+                        }} className="dark:bg-gray-600 dark:text-white bg-gray-500 text-white px-4 py-2 rounded-md">Cancel</button>
+                        {params.slug[0] == "edit" &&
+                            <Switch color="green" label="Publish" className="bg-gray-300" checked={!dataForm.draft} onChange={handleSwitch} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined} />
+                        }
+                    </div>
                 </div>
             </Tabs>
         </div>
