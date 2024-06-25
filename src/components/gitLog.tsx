@@ -45,7 +45,7 @@ const GitLog: React.FC<{ data: Commit[] }> = ({ data }) => {
                                                 second: "numeric",
                                                 hour12: false,
                                             })}{" "}|{" "}
-                                            <Link href={commit.commit_url} className="hover:text-gray-950 hover:underline">
+                                            <Link target="_blank" href={commit.commit_url} className="hover:text-gray-950 hover:underline">
                                                 <strong>{commit.commit_sha.slice(0, 8)}</strong>
                                             </Link>{" "}
 

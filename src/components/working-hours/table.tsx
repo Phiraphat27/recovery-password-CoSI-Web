@@ -242,7 +242,7 @@ const SortableTable: React.FC<SortableTableProps> = (
                                                     variant="small"
                                                     color="blue-gray"
                                                     className="font-normal text-pretty" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                                                >
-                                                    <Link href={`/office/working-hours/commits/${encodeURIComponent(row.id)}`}>
+                                                    <Link target="_blank" href={`/office/working-hours/commits/${encodeURIComponent(row.id)}`}>
                                                         {row.totalCommits}
                                                     </Link>
                                                 </Typography>
@@ -250,14 +250,14 @@ const SortableTable: React.FC<SortableTableProps> = (
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="View Time">
-                                                <Link href={`/office/working-hours/view/${encodeURIComponent(row.id)}`}>
+                                                <Link target="_blank" href={`/office/working-hours/view/${encodeURIComponent(row.id)}`}>
                                                     <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                         <EyeIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Link>
                                             </Tooltip>
                                             {/* <Tooltip content="Edit User">
-                                                <Link href={`/office/publications/edit/${encodeURIComponent(row.id)}`}>
+                                                <Link target="_blank" href={`/office/publications/edit/${encodeURIComponent(row.id)}`}>
                                                     <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>

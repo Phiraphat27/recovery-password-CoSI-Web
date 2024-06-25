@@ -283,7 +283,7 @@ const SortableTable: React.FC<SortableTableProps> = (
                                         </td>
                                         <td className={classes}>
                                             <Tooltip content="Edit User">
-                                                <Link href={`/office/publications/edit/${encodeURIComponent(row.id)}`}>
+                                                <Link target="_blank" href={`/office/publications/edit/${encodeURIComponent(row.id)}`}>
                                                     <IconButton variant="text" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>
