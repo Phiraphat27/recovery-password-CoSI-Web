@@ -57,6 +57,8 @@ import Alert from 'editorjs-alert';
 import Math from "editorjs-math";
 //@ts-ignore
 import BreakLine from 'editorjs-break-line';
+//@ts-ignore
+import YoutubeEmbed from 'editorjs-youtube-embed';
 
 import EditorJS from '@editorjs/editorjs'
 
@@ -124,22 +126,8 @@ export const EDITOR_JS_TOOLS = {
         }
     },
     alert: Alert,
-    embed: {
-        class: Embed,
-        inlineToolbar: true,
-        config: {
-            services: {
-                youtube: true,
-                facebook: true,
-                twitter: true,
-                instagram: true,
-                tiktok: true,
-                vimeo: true,
-                vine: true,
-                coub: true,
-            }
-        }
-    },
+    embed: Embed,
+    youtubeEmbed: YoutubeEmbed,
     table: {
         class: Table,
     },

@@ -240,10 +240,21 @@ export async function getUserList() {
             },
         }
     }).then((users) => {
-        const newdata = users.map((item) => {
+        let newdata = users.map((item) => {
             const { user_password, ...rest } = item as any
             return rest
         })
+        // order by user name
+        newdata.sort((a: any, b: any) => {
+            if (a.profile[0].name < b.profile[0].name) {
+                return -1;
+            }
+            if (a.profile[0].name > b.profile[0].name) {
+                return 1;
+            }
+            return 0;
+        })
+
         return newdata
     }).catch((err) => {
         return err
