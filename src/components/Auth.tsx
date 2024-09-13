@@ -9,6 +9,10 @@ const Auth = () => {
     const pathname = usePathname();
     useEffect(() => {
         async function session() {
+            if (pathname === '/resetpassword') return;
+
+            if (pathname === '/forgotpassword') return;
+
             const res = await getSession();
             if (res && res.user) {
                 if (pathname === '/') {
@@ -18,6 +22,7 @@ const Auth = () => {
                 router.push('/');
             }
         }
+        
         session();
     }, [router]);
     return (

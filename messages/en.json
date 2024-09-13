@@ -10,5 +10,19 @@
         "signIn": "Sign in",
         "notMember": "Not a member?",
         "joinCosi": "Join Cosi"
+    },
+    "ResetPassword": {
+        "HeadReset": "Reset your password",
+        "newpass": "New Password",
+        "confirmpass": "Confirm your password",
+        "passwordInfo": "Use at least 8 characters, one uppercase, one lowercase and one number.",
+        "savenewpass": "Save New Password"
+    },
+    "ForgotPassword": {
+        "HeadForgot": "Forgot Password",
+        "email": "Email",
+        "forgotInfo": "Send a link to your email to reset password",
+        "backtosignIn": "Back to sign in?",
+        "sendLink": "Send Reset Link"
     }
 }
